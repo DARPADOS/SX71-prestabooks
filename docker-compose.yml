@@ -12,7 +12,7 @@ services:
       - postgres:postgres
   
   postgres:
-    image: postgres:9.6.23-stretch
+    image: postgres:13.4-alpine
     environment:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=prestabooks_db

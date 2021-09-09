@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PrestabooksApplication<prestabooks>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "pe.edu.upc.prestabooks.PrestabooksApplication",
+            "projectName": "prestabooks",
+            "args": ""
+        }
+    ]
+}
