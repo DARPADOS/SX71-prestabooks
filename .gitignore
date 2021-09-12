@@ -173,3 +173,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,maven,eclipse,java,linux
+
+.MF
+MANIFEST
+/MANIFEST.MF
+/MANIFEST.MF
+/MANIFEST.
+
+src/main/java/META-INF/
