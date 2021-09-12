@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping
-public class IndexController {
-    @GetMapping
+public class SegurityController {
+    @GetMapping("login")
     public String index(){
-        return "index";
+        return "login/login";
     }
 }

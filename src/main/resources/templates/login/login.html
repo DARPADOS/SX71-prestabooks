@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/loginstyle.css}">
+    <title>Log In | PrestaBooks</title>
+</head>
+<body>
+    <div class="login">
+        <h1>Login</h1>
+        <form method="post" th:action="@{/signin}">
+
+            <div th:if="${param.error}" class="alert alert-danger"> Usuario y Contraseña invalidos </div>
+            <div th:if="${param.logout}" class="alert alert-success"> Haz salido de forma correcta </div>
+
+            <input type="text" id="username" name="username" placeholder="Username">
+            <input type="password" id="password" name="password" placeholder="Password">
+            <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
+        </form>
+    </div>
+</body>
+</html>

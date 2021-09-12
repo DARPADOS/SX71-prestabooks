@@ -3,9 +3,37 @@
 
 <div th:replace="fragments/head :: head('Index')"></div>
 
-<body>
-    <!--sidebar-->
-    <div th:replace="fragments/sidebar :: sidebar"></div>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+	<div id="wrapper">
+        <!--sidebar-->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
+            <!-- Main Content -->
+			<div id="content">
+                <!-- Topbar -->
+                <div th:replace="fragments/topbar :: topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+				<div class="container-fluid">
+                    <div class="container-fluid text-center">
+                        <img th:src="@{/img/svg/learning-animate.svg}" alt="" style="height: 80vh;">
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+			<!-- End of Main Content -->
+            <!-- Footer -->
+            <div th:replace="fragments/footer :: footer"></div>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
 
     <div th:replace="fragments/scripts :: links"></div>
 </body>
