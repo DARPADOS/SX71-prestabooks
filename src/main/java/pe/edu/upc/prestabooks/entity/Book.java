@@ -34,7 +34,6 @@ public class Book {
 	
 	public Book() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Book(int id, @NotEmpty(message = "Ingrese título") String title,

@@ -12,8 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -54,7 +52,6 @@ public class Loan {
 
 	public Loan() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Loan(int id, @NotNull(message = "Ingrese fecha de reserva") Date loan_date,

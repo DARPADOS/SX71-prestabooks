@@ -31,7 +31,6 @@ public class Author {
 
 	public Author() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Author(int id, @NotEmpty(message = "Ingrese nombres") String first_name,

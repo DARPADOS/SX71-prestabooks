@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="fragments/head :: head('Inicio')"></div>
+<div th:replace="fragments/head :: head('Index')"></div>
 
 <body id="page-top">
 
     <!-- Page Wrapper -->
-	<div id="wrapper">
+    <div id="wrapper">
         <!--sidebar-->
         <div th:replace="fragments/sidebar :: sidebar"></div>
 
         <!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
+        <div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
             <!-- Main Content -->
-			<div id="content">
+            <div id="content">
                 <!-- Topbar -->
                 <div th:replace="fragments/topbar :: topbar"></div>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-				<div class="container-fluid">
-                    <div class="container-fluid text-center">
-                        <img th:src="@{/img/svg/learning-animate.svg}" alt="" style="height: 80vh;">
+                <div class="container-fluid">
+                    <div class="card border-danger mt-5">
+                        <div class="card-header text-danger">
+                            <h5>Access Denied</h5>
+                        </div>
+                        <div class="card-body text-danger">
+                            <h5 class="card-title">Acceso denegado al recurso</h5>
+                            <p class="card-text">No tiene permiso.</p>
+                            <p class="card-text">Está tratando de acceder a un recurso protegido </p>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
             </div>
-			<!-- End of Main Content -->
+            <!-- End of Main Content -->
             <!-- Footer -->
             <div th:replace="fragments/footer :: footer"></div>
             <!-- End of Footer -->
@@ -37,4 +44,5 @@
 
     <div th:replace="fragments/scripts :: links"></div>
 </body>
+
 </html>

@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,12 +41,19 @@ public class LoanController {
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/new")
 	public String newLoan(Model model) {
-		model.addAttribute("loan", new Loan());
-		model.addAttribute("listaLectores", readerService.getAll());
-		model.addAttribute("listaLibros", bookService.getAll());
-		model.addAttribute("listaEmpleados", employeeService.getAll());
-		return "loan/loan";
+		try {
+			model.addAttribute("loan", new Loan());
+			model.addAttribute("listaLectores", readerService.getAll());
+			model.addAttribute("listaLibros", bookService.getAll());
+			model.addAttribute("listaEmpleados", employeeService.getAll());
+			
+			return "loan/loan";
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return "redirect:/";
 	}
+
 	//@Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result,
@@ -110,5 +116,4 @@ public class LoanController {
 		}
 		return "loan/updateLoan";
 	}
-	
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head('Inicio')"></div>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!--sidebar-->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <div th:replace="fragments/topbar :: topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Empleados</h1>
+					<a th:href="@{/employees/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+
+					<hr class="sidebar-divider">
+
+					<table class="table table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Id</th>
+                                <th scope="col">Username</th>
+								<th scope="col">DNI</th>
+								<th scope="col">Nombres</th>
+								<th scope="col">Apellidos</th>
+								<th scope="col">Fecha de contratación</th>
+								<th scope="col">Celular</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="employee: ${listEmployees}">
+								<td th:text="${employee.id}"></td>
+								<td th:text="${employee.user.username}"></td>
+                                <td th:text="${employee.dni}"></td>
+								<td th:text="${employee.firstName}"></td>
+								<td th:text="${employee.lastName}"></td>
+								<td th:text="${#dates.format(employee.hireDate, 'dd-MMM-yyyy')}"></td>
+								<td th:text="${employee.phone}"></td>
+							</tr>
+						</tbody>
+					</table>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <div th:replace="fragments/footer :: footer"></div>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <div th:replace="fragments/scripts :: links"></div>
+</body>
+
+</html>

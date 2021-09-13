@@ -1,5 +1,6 @@
 package pe.edu.upc.prestabooks.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,11 +16,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.Pattern;
 
 @Entity
@@ -31,42 +32,35 @@ public class Employee {
     @Id
     private Integer id;
 
-    @Min(10000000)
-    @Max(99999999)
-    @NotNull(message = "Ingrese un DNI.")
-    @Pattern(regexp = "\\d+", message = "Ingrese el correctamente el campo DNI.")
+    @Size(min = 8, max = 8, message = "El dni debe de tener 8 digitos.")
+    @Pattern(regexp = "\\d+", message = "Ingrese DNI correctamente.")
     @Column(name = "dni")
-    private Integer dni;
+    private String dni;
 
-    @Size(max = 20)
-    @NotNull(message = "Ingrese un nombre.")
-    @NotBlank(message = "Ingrese un nombre.")
+    @Size(max = 50)
+    @Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
     @Column(name = "first_name")
     private String firstName;
 
-    @Size(max = 20)
-    @NotNull(message = "Ingrese un Apellido.")
-    @NotBlank(message = "Ingrese un Apellido.")
+    @Size(max = 50)
+    @Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el apellido correctamente")
     @Column(name = "last_name")
     private String lastName;
 
     @NotNull(message = "Ingrese una fecha de contratación.")
-    @NotBlank(message = "Ingrese una fecha de contratación.")
     @Column(name = "hire_date")
-    @Temporal(TemporalType.TIME)
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Temporal(TemporalType.DATE)
     private Date hireDate;
 
-    @NotNull(message = "Ingrese un celular.")
-    @NotBlank(message = "Ingrese un celular.")
-    @Min(100000000)
-    @Max(999999999)
+    @Size(min = 9, max = 9, message = "El celular debe de tener 9 digitos.")
     @Pattern(regexp = "\\d+", message = "Ingrese el correctamente el celular.")
     @Column(name = "phone")
-    private Integer phone; 
+    private String phone; 
     
     // Relaciones
-    //@OneToMany(mappedBy="employee", fetch=FetchType.LAZY)
-    //private List<Loan> loans;
+    @OneToMany(mappedBy="employee", fetch=FetchType.LAZY)
+    private List<Loan> loans;
 
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId("id")
@@ -75,18 +69,18 @@ public class Employee {
 
     public Employee() {
         super();
-        //loans = new ArrayList<Loan>();
+        loans = new ArrayList<Loan>();
     }
 
-    public Employee(Integer id, Integer dni, String firstName, String lastName, Date hireDate, Integer phone,
-            /*List<Loan> loans,*/ User user) {
+    public Employee(Integer id, String dni, String firstName, String lastName, Date hireDate, String phone,
+            List<Loan> loans, User user) {
         this.id = id;
         this.dni = dni;
         this.firstName = firstName;
         this.lastName = lastName;
         this.hireDate = hireDate;
         this.phone = phone;
-        //this.loans = loans;
+        this.loans = loans;
         this.user = user;
     }
 
@@ -98,11 +92,11 @@ public class Employee {
         this.id = id;
     }
 
-    public Integer getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(Integer dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 
@@ -130,14 +124,14 @@ public class Employee {
         this.hireDate = hireDate;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
-/*
+
     public List<Loan> getLoans() {
         return loans;
     }
@@ -145,7 +139,7 @@ public class Employee {
     public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
-*/
+
     public User getUser() {
         return user;
     }

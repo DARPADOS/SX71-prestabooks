@@ -40,7 +40,6 @@ public class Reader {
 	
 	public Reader() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Reader(int id, @NotEmpty(message = "Ingrese DNI") String dni,

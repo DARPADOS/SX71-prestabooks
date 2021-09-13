@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head('Inicio')"></div>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+	<div id="wrapper">
+        <!--sidebar-->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
+            <!-- Main Content -->
+			<div id="content">
+                <!-- Topbar -->
+                <div th:replace="fragments/topbar :: topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+				<div class="container-fluid">
+
+                    <!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Empleado</h1>
+
+					<hr class="sidebar-divider">
+					<div th:object="${employee}" th:remove="tag">
+						<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+							role="alert">
+							<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+						</ul>
+					</div>
+
+					<form th:action="@{/employees/save}" novalidate
+						method="post">
+
+                        <div th:object="${user}">
+                            <div class="form-group row">
+                                <label for="newusername" class="col-sm-2 col-form-label">Usuario:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{username}" autocomplete="off"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('username')}"
+                                        th:errors="*{username}"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="newpassword" class="col-sm-2 col-form-label">Contraseña:</label>
+                                <div class="col-sm-6">
+                                    <input type="password" th:field="*{password}"autocomplete="off"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('password')}"
+                                        th:errors="*{password}"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:object="${employee}">
+                            <div class="form-group row">
+                                <label for="dni" class="col-sm-2 col-form-label">DNI:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{dni}"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('dni')}"
+                                        th:errors="*{dni}"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="firstName" class="col-sm-2 col-form-label">Nombres:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{firstName}"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('firstName')}"
+                                        th:errors="*{firstName}"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="lastName" class="col-sm-2 col-form-label">Apellidos:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{lastName}"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('lastName')}"
+                                        th:errors="*{lastName}"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="hireDate" class="col-sm-2 col-form-label">Fecha de contratación:</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <input type="date" class="form-control" id="hireDate" autocomplete="off" th:field="*{{hireDate}}"/>
+                                    </div>
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('hireDate')}"
+                                        th:errors="*{hireDate}"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="phone" class="col-sm-2 col-form-label">Celular:</label>
+                                <div class="col-sm-6">
+                                    <input type="text" th:field="*{phone}"
+                                        class="form-control"
+                                        th:errorclass="'form-control alert-danger'" />
+                                    <small
+                                        class="form-text text-danger"
+                                        th:if="${#fields.hasErrors('phone')}"
+                                        th:errors="*{phone}"></small>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <!--
+						<div class="form-group row">
+							<label for="atNetBasicSalary" class="col-sm-2 col-form-label">Sueldo básico neto:</label>
+							<div class="col-sm-6">
+								<input type="number" step="any" th:field="*{atNetBasicSalary}"
+									class="form-control" required
+									th:errorclass="'form-control alert-danger'" /> <small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('atNetBasicSalary')}"
+									th:errors="*{atNetBasicSalary}"></small>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="name" class="col-sm-2 col-form-label">Gratificación:</label>
+							<div class="col-sm-6">
+								<input type="number" step="any" th:field="*{atGratification}"
+									class="form-control" required
+									th:errorclass="'form-control alert-danger'" /><small
+									class="form-text text-danger"
+									th:if="${#fields.hasErrors('atGratification')}"
+									th:errors="*{atGratification}"></small>
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="atWorkedDays" class="col-sm-2 col-form-label">Días trabajados en los últimos  180 días:</label>
+							<div class="col-sm-6">
+								<input type="number" step="any" th:field="*{atWorkedDays}" class="form-control"
+									th:errorclass="'form-control alert-danger'" /><small
+									class="form-text text-danger" required
+									th:if="${#fields.hasErrors('atWorkedDays')}"
+									th:errors="*{atWorkedDays}"></small>
+							</div>
+						</div>
+
+                        -->
+
+						<div class="form-group row">
+							<div class="col-sm-6">
+								<input type="submit" value="Guardar" class="btn btn-secondary"></input>
+								<a th:href="@{/employees/list}" class="btn btn-danger">Cancelar</a>
+							</div>
+						</div>
+
+					</form>
+
+
+					<p th:text="${mensaje}" class="form-text text-success"></p>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+			<!-- End of Main Content -->
+            <!-- Footer -->
+            <div th:replace="fragments/footer :: footer"></div>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <div th:replace="fragments/scripts :: links"></div>
+
+    <script>
+        $('.input-group.date').datepicker({
+            autoclose: true,
+            todayHighlight: true
+        });
+    </script>
+</body>
+</html>

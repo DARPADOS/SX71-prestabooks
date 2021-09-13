@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SegurityController {
     @GetMapping("login")
     public String index(){
-        return "login/login";
+        return "security/login";
+    }
+
+    @GetMapping("access-denied")
+    public String accessDenied(){
+        return "security/access-denied";
     }
 }

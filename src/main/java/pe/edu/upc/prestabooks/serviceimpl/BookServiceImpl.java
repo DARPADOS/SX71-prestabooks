@@ -2,11 +2,13 @@ package pe.edu.upc.prestabooks.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import pe.edu.upc.prestabooks.entity.Book;
 import pe.edu.upc.prestabooks.repository.BookRepository;
 import pe.edu.upc.prestabooks.service.BookService;
 
+@Service
 public class BookServiceImpl implements BookService{
 	@Autowired
 	private BookRepository bookRepository;
@@ -14,7 +16,6 @@ public class BookServiceImpl implements BookService{
 	
 	@Override
 	public JpaRepository<Book, Integer> getRepository() {
-		// TODO Auto-generated method stub
 		return bookRepository;
 	}
 

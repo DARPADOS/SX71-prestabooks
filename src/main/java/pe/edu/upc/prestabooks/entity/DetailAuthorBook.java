@@ -2,13 +2,15 @@ package pe.edu.upc.prestabooks.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Author_Book")
-public class Author_Book {
+@Table(name = "Detail_Author_Book")
+@IdClass(value = DetailAuthorBookId.class)
+public class DetailAuthorBook {
 	
 	@Id
 	@ManyToOne
@@ -20,12 +22,11 @@ public class Author_Book {
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 	
-	public Author_Book() {
+	public DetailAuthorBook() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Author_Book(Author author, Book book) {
+	public DetailAuthorBook(Author author, Book book) {
 		super();
 		this.author = author;
 		this.book = book;
@@ -48,7 +49,7 @@ public class Author_Book {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Author_Book other = (Author_Book) obj;
+			DetailAuthorBook other = (DetailAuthorBook) obj;
 		if (author == null) {
 			if (other.author != null)
 				return false;
