@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head('Inicio')"></div>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!--sidebar-->
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column"
+			style="overflow-y: scroll; height: 100vh;">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<div th:replace="fragments/topbar :: topbar"></div>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Libros</h1>
+					<a th:href="@{/books/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+
+					<hr class="sidebar-divider">
+
+					<table class="table table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Id</th>
+								<th scope="col">Titulo</th>
+								<th scope="col">Idioma</th>
+								<th scope="col">Stock</th>
+								<th scope="col">N° paginas</th>
+								<th scope="col">Autor</th>
+								<th scope="col">OP</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="book: ${listaLibros}">
+								<td th:text="${book.id}"></td>
+								<td th:text="${book.title}"></td>
+								<td th:text="${book.original_language}"></td>
+								<td th:text="${book.stock}"></td>
+								<td th:text="${book.pages}"></td>
+								<td
+									th:text="${book.author.first_name}+' '${book.author.last_name}+"></td>
+								<td><a th:href="@{/books/delete?id=}+${book.id}"
+									class="btn btn-danger"><i class="fa fa-trash"
+										aria-hidden="true"></i></a></td>
+
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- End of Main Content -->
+			<!-- Footer -->
+			<div th:replace="fragments/footer :: footer"></div>
+			<!-- End of Footer -->
+		</div>
+		<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<div th:replace="fragments/scripts :: links"></div>
+</body>
+
+</html>

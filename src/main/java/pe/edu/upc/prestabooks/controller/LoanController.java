@@ -1,6 +1,7 @@
 package pe.edu.upc.prestabooks.controller;
 
 import java.util.Map;
+
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -41,19 +42,27 @@ public class LoanController {
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/new")
 	public String newLoan(Model model) {
+		model.addAttribute("loan", new Loan());
 		try {
-			model.addAttribute("loan", new Loan());
 			model.addAttribute("listaLectores", readerService.getAll());
-			model.addAttribute("listaLibros", bookService.getAll());
-			model.addAttribute("listaEmpleados", employeeService.getAll());
-			
-			return "loan/loan";
 		} catch (Exception e) {
-			e.getStackTrace();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return "redirect:/";
+		try {
+			model.addAttribute("listaLibros", bookService.getAll());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			model.addAttribute("listaEmpleados", employeeService.getAll());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "loan/loan";
 	}
-
 	//@Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result,
@@ -116,4 +125,5 @@ public class LoanController {
 		}
 		return "loan/updateLoan";
 	}
+	
 }

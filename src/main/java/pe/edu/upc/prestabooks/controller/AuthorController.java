@@ -50,7 +50,7 @@ public class AuthorController {
 	@GetMapping("/list")
 	public String listAuthor(Model model) {
 		try {
-			model.addAttribute("listaAuthors", authorService.getAll());
+			model.addAttribute("listaAutores", authorService.getAll());
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
