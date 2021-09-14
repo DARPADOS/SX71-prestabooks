@@ -11,6 +11,7 @@ public class DetailAuthorBookId implements Serializable {
     private Integer book;
 
     public DetailAuthorBookId(Integer author, Integer book) {
+        super();
         this.author = author;
         this.book = book;
     }

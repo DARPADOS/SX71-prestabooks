@@ -16,7 +16,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,7 +35,7 @@ public class Employee {
     private Integer id;
 
     @Size(min = 8, max = 8, message = "El dni debe de tener 8 digitos.")
-    @Pattern(regexp = "\\d+", message = "Ingrese DNI correctamente.")
+    @Pattern(regexp = "[^0]\\d+", message = "Ingrese DNI correctamente.")
     @Column(name = "dni")
     private String dni;
 
@@ -49,12 +51,13 @@ public class Employee {
 
     @NotNull(message = "Ingrese una fecha de contratación.")
     @Column(name = "hire_date")
+    @PastOrPresent
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Temporal(TemporalType.DATE)
     private Date hireDate;
 
     @Size(min = 9, max = 9, message = "El celular debe de tener 9 digitos.")
-    @Pattern(regexp = "\\d+", message = "Ingrese el correctamente el celular.")
+    @Pattern(regexp = "^[9]\\d+", message = "Ingrese el correctamente el celular.")
     @Column(name = "phone")
     private String phone; 
     

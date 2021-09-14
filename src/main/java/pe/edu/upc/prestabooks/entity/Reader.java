@@ -1,10 +1,15 @@
 package pe.edu.upc.prestabooks.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -38,8 +43,13 @@ public class Reader {
 	@Column(name = "address", nullable =false , length=150)
 	private String address;
 	
+	// Relaciones
+	@OneToMany(mappedBy = "reader", fetch = FetchType.LAZY)
+	private List<Loan> loans;
+
 	public Reader() {
 		super();
+		loans = new ArrayList<Loan>();
 	}
 
 	public Reader(int id, @NotEmpty(message = "Ingrese DNI") String dni,
@@ -92,6 +102,14 @@ public class Reader {
 
 	public void setDni(String dni) {
 		this.dni = dni;
+	}
+
+	public List<Loan> getLoans() {
+		return loans;
+	}
+
+	public void setLoans(List<Loan> loans) {
+		this.loans = loans;
 	}
 
 	public String getFirst_name() {

@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="users")
@@ -27,11 +28,11 @@ public class User {
     @Column(name="user_id")
     private Integer id;
     
+    @NotBlank
     @Column(name="username", length=20, nullable=false)
 	private String username;
 	
-    //@Size(max = 20, min = 5, message = "La contraseña tiene que poseer entre 5 a 20 carácteres.")
-    @NotNull
+    @Size(max = 60, min = 5, message = "La contraseña tiene que poseer entre 5 a 60 carácteres.")
     @NotBlank
 	@Column(name="password",  length=60, nullable=false)
 	private String password;

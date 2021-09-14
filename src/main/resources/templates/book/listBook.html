@@ -35,7 +35,7 @@
 								<th scope="col">Titulo</th>
 								<th scope="col">Idioma</th>
 								<th scope="col">Stock</th>
-								<th scope="col">N° paginas</th>
+								<th scope="col">NÂ° paginas</th>
 								<th scope="col">Autor</th>
 								<th scope="col">OP</th>
 							</tr>
@@ -47,8 +47,7 @@
 								<td th:text="${book.original_language}"></td>
 								<td th:text="${book.stock}"></td>
 								<td th:text="${book.pages}"></td>
-								<td
-									th:text="${book.author.first_name}+' '${book.author.last_name}+"></td>
+								<td ><p th:each="detail: ${book.detailAuthorBooks}" th:text="${detail.author.first_name} +' '+ ${detail.author.last_name}"></p></td>
 								<td><a th:href="@{/books/delete?id=}+${book.id}"
 									class="btn btn-danger"><i class="fa fa-trash"
 										aria-hidden="true"></i></a></td>

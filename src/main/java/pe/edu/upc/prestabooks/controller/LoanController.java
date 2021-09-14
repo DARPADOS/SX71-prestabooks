@@ -45,20 +45,9 @@ public class LoanController {
 		model.addAttribute("loan", new Loan());
 		try {
 			model.addAttribute("listaLectores", readerService.getAll());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			model.addAttribute("listaLibros", bookService.getAll());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
 			model.addAttribute("listaEmpleados", employeeService.getAll());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "loan/loan";
@@ -83,7 +72,7 @@ public class LoanController {
 	@GetMapping("/list")
 	public String listLoan(Model model) {
 		try {
-			model.addAttribute("listaReservaciones", loanService.getAll());
+			model.addAttribute("listLoan", loanService.getAll());
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}

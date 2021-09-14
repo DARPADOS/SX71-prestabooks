@@ -1,5 +1,6 @@
 package pe.edu.upc.prestabooks.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
+import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.entity.Book;
 import pe.edu.upc.prestabooks.service.AuthorService;
 import pe.edu.upc.prestabooks.service.BookService;
+import pe.edu.upc.prestabooks.service.DetailAuthorBookService;
 
 @Controller
 @RequestMapping("/books")
@@ -30,6 +33,9 @@ public class BookController {
 	
 	@Autowired
 	private AuthorService authorService;
+
+	@Autowired
+	private DetailAuthorBookService detailAuthorBookService;
 	
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/new")
@@ -45,13 +51,17 @@ public class BookController {
 	
 	//@Secured("ROLE_ADMIN")
 	@PostMapping("/save")
-	public String saveBook(@Valid @ModelAttribute(value = "book") Book book, BindingResult result,
+	public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result,
 			Model model, SessionStatus status) throws Exception {
 		if (result.hasErrors()) {
 			model.addAttribute("listaAutores", authorService.getAll());
 			return "book/book";
 		} else {
-			bookService.create(book);
+
+			List<Author> authors = book.getAuthors(); 
+			Book newBook = bookService.create(book);
+			detailAuthorBookService.addAuthorsWithBook(newBook, authors);
+
 			model.addAttribute("mensaje", "Se realizó bien!!");
 			status.setComplete();
 			return "redirect:/books/list";

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head('Inicio')"></div>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!--sidebar-->
+        <div th:replace="fragments/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                <div th:replace="fragments/topbar :: topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Prestamos</h1>
+					<a th:href="@{/loan/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+
+					<hr class="sidebar-divider">
+
+					<table class="table table-striped">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Id</th>
+                                <th scope="col">Libro</th>
+								<th scope="col">DNI del Lector</th>
+								<th scope="col">Lector</th>
+								<th scope="col">Empleado</th>
+								<th scope="col">Fecha de prestamo</th>
+								<th scope="col">Fecha de devolución</th>
+                                <th scope="col">Estatus</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="loan: ${listLoan}">
+								<td th:text="${loan.id}"></td>
+								<td th:text="${loan.book.title}"></td>
+                                <td th:text="${loan.reader.dni}"></td>
+								<td th:text="${loan.reader.firstName} + ${loan.reader.lastName}"></td>
+								<td th:text="${loan.employee.firstName} + ${loan.employee.lastName}"></td>
+								<td th:text="${#dates.format(loan.loanDate, 'dd-MMM-yyyy')}"></td>
+                                <td th:text="${#dates.format(loan.returnDate, 'dd-MMM-yyyy')}"></td>
+                                <td th:text="${loan.status}"></td>
+							</tr>
+						</tbody>
+					</table>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            <div th:replace="fragments/footer :: footer"></div>
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <div th:replace="fragments/scripts :: links"></div>
+</body>
+
+</html>

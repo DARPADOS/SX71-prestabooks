@@ -1,6 +1,7 @@
 package pe.edu.upc.prestabooks.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -13,12 +14,12 @@ import javax.persistence.Table;
 public class DetailAuthorBook {
 	
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "author_id", nullable = false)
 	private Author author;
 	
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 	

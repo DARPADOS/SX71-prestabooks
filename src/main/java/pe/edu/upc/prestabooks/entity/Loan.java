@@ -29,15 +29,18 @@ public class Loan {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "loan_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date loan_date;
+	private Date loanDate;
 	
 	@NotNull(message = "Ingrese fecha de entrega")
 	//@Future(message = "La FECHA DEL PEDIDO debe ser futura")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "return_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date return_date;
+	private Date returnDate;
 	
+	@Column(name = "status")
+	private String status;
+
 	@ManyToOne
 	@JoinColumn(name = "employee_id", nullable = false)
 	private Employee employee;
@@ -54,13 +57,13 @@ public class Loan {
 		super();
 	}
 
-	public Loan(int id, @NotNull(message = "Ingrese fecha de reserva") Date loan_date,
-			@NotNull(message = "Ingrese fecha de entrega") Date return_date, Employee employee, Reader reader,
-			Book book) {
-		super();
+	public Loan(int id, @NotNull(message = "Ingrese fecha de reserva") Date loanDate,
+			@NotNull(message = "Ingrese fecha de entrega") Date returnDate, String status, Employee employee,
+			Reader reader, Book book) {
 		this.id = id;
-		this.loan_date = loan_date;
-		this.return_date = return_date;
+		this.loanDate = loanDate;
+		this.returnDate = returnDate;
+		this.status = status;
 		this.employee = employee;
 		this.reader = reader;
 		this.book = book;
@@ -88,6 +91,14 @@ public class Loan {
 		return true;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -96,20 +107,20 @@ public class Loan {
 		this.id = id;
 	}
 
-	public Date getLoan_date() {
-		return loan_date;
+	public Date getLoanDate() {
+		return loanDate;
 	}
 
-	public void setLoan_date(Date loan_date) {
-		this.loan_date = loan_date;
+	public void setLoanDate(Date loanDate) {
+		this.loanDate = loanDate;
 	}
 
-	public Date getReturn_date() {
-		return return_date;
+	public Date getReturnDate() {
+		return returnDate;
 	}
 
-	public void setReturn_date(Date return_date) {
-		this.return_date = return_date;
+	public void setReturnDate(Date returnDate) {
+		this.returnDate = returnDate;
 	}
 
 	public Employee getEmployee() {

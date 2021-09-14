@@ -1,10 +1,14 @@
 package pe.edu.upc.prestabooks.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
@@ -15,7 +19,7 @@ public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@NotEmpty(message = "Ingrese nombres")
 	@Column(name = "first_name", nullable =false , length=25)
@@ -29,8 +33,13 @@ public class Author {
 	@Column(name = "nationality", nullable =false , length=50)
 	private String nationality;
 
+	// Relaciones
+	@OneToMany(mappedBy = "author")
+	private List<DetailAuthorBook> detailAuthorBooks;
+
 	public Author() {
 		super();
+		detailAuthorBooks = new ArrayList<DetailAuthorBook>();
 	}
 
 	public Author(int id, @NotEmpty(message = "Ingrese nombres") String first_name,
@@ -43,11 +52,19 @@ public class Author {
 		this.nationality = nationality;
 	}
 
-	public int getId() {
+	public List<DetailAuthorBook> getDetailAuthorBooks() {
+		return detailAuthorBooks;
+	}
+
+	public void setDetailAuthorBooks(List<DetailAuthorBook> detailAuthorBooks) {
+		this.detailAuthorBooks = detailAuthorBooks;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

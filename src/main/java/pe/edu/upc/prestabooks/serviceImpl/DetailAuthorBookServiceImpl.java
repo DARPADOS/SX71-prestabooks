@@ -1,10 +1,15 @@
 package pe.edu.upc.prestabooks.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import pe.edu.upc.prestabooks.entity.Author;
+import pe.edu.upc.prestabooks.entity.Book;
 import pe.edu.upc.prestabooks.entity.DetailAuthorBook;
+import pe.edu.upc.prestabooks.entity.DetailAuthorBookId;
 import pe.edu.upc.prestabooks.repository.DetailAuthorBookRepository;
 import pe.edu.upc.prestabooks.service.DetailAuthorBookService;
 
@@ -14,8 +19,15 @@ public class DetailAuthorBookServiceImpl implements DetailAuthorBookService{
 	private DetailAuthorBookRepository detailAuthorBookRepository;
 
 	@Override
-	public JpaRepository<DetailAuthorBook, Integer> getRepository() {
+	public JpaRepository<DetailAuthorBook, DetailAuthorBookId> getRepository() {
 		return detailAuthorBookRepository;
+	}
+
+	@Override
+	public void addAuthorsWithBook(Book book, List<Author> authors) throws Exception{
+		for (Author author : authors) {
+			this.create(new DetailAuthorBook(author, book));
+		}		
 	}
 
 }
