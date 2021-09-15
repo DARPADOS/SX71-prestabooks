@@ -29,37 +29,36 @@ import pe.edu.upc.prestabooks.service.ReaderService;
 public class LoanController {
 	@Autowired
 	private LoanService loanService;
-	
+
 	@Autowired
 	private ReaderService readerService;
-	
+
 	@Autowired
 	private BookService bookService;
-	
+
 	@Autowired
 	private EmployeeService employeeService;
-	
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/new")
 	public String newLoan(Model model) {
 		model.addAttribute("loan", new Loan());
 		try {
-			model.addAttribute("listaLectores", readerService.getAll());
-			model.addAttribute("listaLibros", bookService.getAll());
-			model.addAttribute("listaEmpleados", employeeService.getAll());
+			model.addAttribute("listReaders", readerService.getAll());
+			model.addAttribute("listBooks", bookService.getAll());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "loan/loan";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
-	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result,
-			Model model, SessionStatus status) throws Exception {
+	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result, Model model,
+			SessionStatus status) throws Exception {
 		if (result.hasErrors()) {
-			model.addAttribute("listaLectores", readerService.getAll());
-			model.addAttribute("listaLibros", bookService.getAll());
-			model.addAttribute("listaEmpleados", employeeService.getAll());
+			model.addAttribute("listReader", readerService.getAll());
+			model.addAttribute("listBooks", bookService.getAll());
 			return "loan/loan";
 		} else {
 			loanService.create(loan);
@@ -68,7 +67,8 @@ public class LoanController {
 			return "redirect:/loans/list";
 		}
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/list")
 	public String listLoan(Model model) {
 		try {
@@ -76,13 +76,14 @@ public class LoanController {
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
-		return "loan/listLoan";
+		return "loan/list";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
 	public String deleteLoan(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
 		try {
-			if(id!=null && id>0) {
+			if (id != null && id > 0) {
 				loanService.deleteById(id);
 				model.put("mensaje", "Se eliminó correctamente!!");
 			}
@@ -93,7 +94,8 @@ public class LoanController {
 		return "redirect:/loans/list";
 
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
 	public String viewLoan(@PathVariable(value = "id") int id, Model model) {
 		try {
@@ -101,12 +103,11 @@ public class LoanController {
 			model.addAttribute("listaLectores", readerService.getAll());
 			model.addAttribute("listaLibros", bookService.getAll());
 			model.addAttribute("listaEmpleados", employeeService.getAll());
-			if(!loan.isPresent()) {
-				model.addAttribute("mensaje","Reserva no existe");
+			if (!loan.isPresent()) {
+				model.addAttribute("mensaje", "Reserva no existe");
 				return "redirect:/loans/list";
-			}
-			else {
-				model.addAttribute("loan",loan.get());
+			} else {
+				model.addAttribute("loan", loan.get());
 				return "loan/updateLoan";
 			}
 		} catch (Exception e) {
@@ -114,5 +115,5 @@ public class LoanController {
 		}
 		return "loan/updateLoan";
 	}
-	
+
 }

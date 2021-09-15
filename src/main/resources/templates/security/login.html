@@ -1,25 +1,64 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/loginstyle.css}">
     <title>Log In | PrestaBooks</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.2/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="login">
-        <h1>Login</h1>
-        <form method="post" th:action="@{/signin}">
+    <div id="background-image"></div>
+    <div id="background-overlay"></div>
+    <div id="login-form-container">
+        <div class="card" style="width: 400px;">
 
-            <div th:if="${param.error}" class="alert alert-danger"> Usuario y Contraseña invalidos </div>
-            <div th:if="${param.logout}" class="alert alert-success"> Haz salido de forma correcta </div>
+            <div class="card-content ">
 
-            <input type="text" id="username" name="username" placeholder="Username">
-            <input type="password" id="password" name="password" placeholder="Password">
-            <button type="submit" class="btn btn-primary btn-block btn-large">Login</button>
-        </form>
+                <div class="title is-size-3 has-text-centered pt-0">PrestaBooks</div>
+
+                <div class="content">
+                    <form method="post" th:action="@{/signin}">
+
+                        <div th:if="${param.error}" class="alert alert-danger"> Usuario y Contraseña invalidos </div>
+                        <div th:if="${param.logout}" class="alert alert-success"> Haz salido de forma correcta </div>
+
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <input class="input" type="text" id="username" name="username" placeholder="Username">
+                                <span class="icon is-small is-left">
+                                    <span class="material-icons">person</span>
+                                </span>
+                                <span class="icon is-small is-right">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </p>
+                        </div>
+
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input class="input" type="password" id="password" name="password"
+                                    placeholder="Password">
+                                <span class="icon is-small is-left">
+                                    <span class="material-icons">lock</span>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="field">
+                            <button class="button is-fullwidth is-info" type="submit">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
