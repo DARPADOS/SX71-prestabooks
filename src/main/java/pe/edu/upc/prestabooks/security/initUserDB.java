@@ -12,8 +12,10 @@ import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.entity.Book;
 import pe.edu.upc.prestabooks.entity.DetailAuthorBook;
 import pe.edu.upc.prestabooks.entity.Employee;
+import pe.edu.upc.prestabooks.entity.Reader;
 import pe.edu.upc.prestabooks.entity.User;
 import pe.edu.upc.prestabooks.repository.EmployeeRepository;
+import pe.edu.upc.prestabooks.repository.ReaderRepository;
 import pe.edu.upc.prestabooks.repository.UserRepository;
 import pe.edu.upc.prestabooks.service.AuthorService;
 import pe.edu.upc.prestabooks.service.BookService;
@@ -31,6 +33,9 @@ public class initUserDB implements CommandLineRunner{
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ReaderRepository readerRepository;
 
     @Autowired
     private BookService bookService;
@@ -66,6 +71,16 @@ public class initUserDB implements CommandLineRunner{
 
             employeeRepository.save(employee);
 */
+
+            Reader reader = new Reader();
+            reader.setDni("12345678");
+            reader.setFirst_name("Emilio");
+            reader.setLast_name("Montecarlo");
+            reader.setEmail("emilio123@gmail.com");
+            reader.setAddress("calle siempre viva");
+
+            readerRepository.save(reader);
+
             Author author = new Author();
             author.setFirst_name("Stephen");
             author.setLast_name("King");
