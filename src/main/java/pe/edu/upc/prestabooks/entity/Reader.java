@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Reader")
@@ -23,14 +24,17 @@ public class Reader {
 	private int id;
 	
 	@NotEmpty(message = "Ingrese DNI")
+	@Pattern(regexp = "[^0]\\d+", message = "Ingrese DNI correctamente.")
 	@Column(name = "dni", nullable =false , length=8)
 	private String dni;
 	
 	@NotEmpty(message = "Ingrese nombres")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
 	@Column(name = "first_name", nullable =false , length=30)
 	private String first_name;
 	
 	@NotEmpty(message = "Ingrese apellidos")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el apellido correctamente")
 	@Column(name = "last_name", nullable =false , length=30)
 	private String last_name;
 	
