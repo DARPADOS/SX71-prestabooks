@@ -1,7 +1,6 @@
 package pe.edu.upc.prestabooks.security;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.entity.Book;
-import pe.edu.upc.prestabooks.entity.DetailAuthorBook;
 import pe.edu.upc.prestabooks.entity.Employee;
 import pe.edu.upc.prestabooks.entity.Reader;
 import pe.edu.upc.prestabooks.entity.User;
@@ -60,17 +58,18 @@ public class initUserDB implements CommandLineRunner{
             User userEmployee = new User();
             userEmployee.setUsername("employee1");
             userEmployee.setPassword("123456");
-            /*
+            userEmployee.addAuthority("ROLE_EMPLOYEE");
+            
             Employee employee = new Employee();
             employee.setId(userService.registerNewEmployeeAccount(userEmployee).getId());
             employee.setDni("12345678");
             employee.setFirstName("Luis");
             employee.setLastName("Lopez");
-            employee.setHireDate(Calendar.getInstance(TimeZone.getTimeZone("GMT-4")).getTime());
+            employee.setHireDate(Calendar.getInstance().getTime());
             employee.setPhone("964282430");
 
             employeeRepository.save(employee);
-*/
+
 
             Reader reader = new Reader();
             reader.setDni("12345678");
@@ -92,7 +91,7 @@ public class initUserDB implements CommandLineRunner{
             book.setTitle("It");
             book.setOriginal_language("Ingles");
             book.setPages(123);
-            book.setStock(5);
+            book.setStock(2);
             book.getAuthors().add(author);
 
             

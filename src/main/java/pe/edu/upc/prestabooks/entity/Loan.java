@@ -1,5 +1,6 @@
 package pe.edu.upc.prestabooks.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,10 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Min;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,30 +22,42 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Table(name = "Loan")
 public class Loan {
 	
+	// Campos
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotNull(message = "Ingrese fecha de reserva")
+	//@NotNull(message = "Ingrese fecha de reserva")
 	//@Future(message = "La FECHA DEL PEDIDO debe ser futura")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "loan_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "EEEE, dd/MM/yyyy HH:mm")
 	private Date loanDate;
 	
-	@NotNull(message = "Ingrese fecha de entrega")
+	//@NotNull(message = "Ingrese fecha de entrega")
 	//@Future(message = "La FECHA DEL PEDIDO debe ser futura")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "return_date")
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date returnDate;
 	
-	@Column(name = "status")
-	private String status;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "return_limit_date")
+	@DateTimeFormat(pattern = "EEEE, dd/MM/yyyy HH:mm")
+	private Date returnLimitDate;
+
+	@Column(name = "returned")
+	private Boolean returned;
+
+	@Column(name = "delay")
+	private Boolean delay;
+
+	// Relaciones
 
 	@ManyToOne
-	@JoinColumn(name = "employee_id", nullable = false)
-	private Employee employee;
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "reader_id", nullable = false)
@@ -53,20 +67,42 @@ public class Loan {
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 
+	// Transitorios
+	@Min(value = 1, message = "No hay stock del Libro")
+	private Integer bookStock;
+
+
 	public Loan() {
 		super();
+		delay = false;
+		returned = false;
+		Calendar today = Calendar.getInstance();
+		loanDate = today.getTime();
+		today.add(Calendar.DATE, 3);
+		today.set(Calendar.HOUR_OF_DAY, 19);
+		today.set(Calendar.MINUTE, 0);
+		today.set(Calendar.SECOND, 0);
+		returnLimitDate = today.getTime();
 	}
 
-	public Loan(int id, @NotNull(message = "Ingrese fecha de reserva") Date loanDate,
-			@NotNull(message = "Ingrese fecha de entrega") Date returnDate, String status, Employee employee,
+	public Loan(int id, Date loanDate, Date returnDate, Date returnLimitDate, Boolean returned, Boolean delay, User user,
 			Reader reader, Book book) {
 		this.id = id;
 		this.loanDate = loanDate;
 		this.returnDate = returnDate;
-		this.status = status;
-		this.employee = employee;
+		this.returnLimitDate = returnLimitDate;
+		this.returned = returned;
+		this.delay = delay;
+		this.user = user;
 		this.reader = reader;
 		this.book = book;
+	}
+
+	@PostLoad
+	private void settingDelay(){
+		if(!delay && !returned){
+			this.delay = returnLimitDate.before(Calendar.getInstance().getTime());
+		}
 	}
 
 	@Override
@@ -91,20 +127,37 @@ public class Loan {
 		return true;
 	}
 
-	public String getStatus() {
-		return status;
+	public Date getReturnLimitDate() {
+		return returnLimitDate;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setReturnLimitDate(Date returnLimitDate) {
+		this.returnLimitDate = returnLimitDate;
+	}
+
+	public Boolean getReturned() {
+		return returned;
+	}
+
+	public void setReturned(Boolean returned) {
+		this.returned = returned;
+	}
+
+	public Boolean getDelay() {
+		return delay;
+	}
+
+	public void setDelay(Boolean delay) {
+		this.delay = delay;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public Loan setId(int id) {
 		this.id = id;
+		return this;
 	}
 
 	public Date getLoanDate() {
@@ -123,12 +176,12 @@ public class Loan {
 		this.returnDate = returnDate;
 	}
 
-	public Employee getEmployee() {
-		return employee;
+	public User getUser() {
+		return user;
 	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Reader getReader() {
@@ -145,6 +198,7 @@ public class Loan {
 
 	public void setBook(Book book) {
 		this.book = book;
+		this.bookStock = book.getStock();
 	}
 	
 }

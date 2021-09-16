@@ -1,22 +1,17 @@
 package pe.edu.upc.prestabooks.entity;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
@@ -62,8 +57,7 @@ public class Employee {
     private String phone; 
     
     // Relaciones
-    @OneToMany(mappedBy="employee", fetch=FetchType.LAZY)
-    private List<Loan> loans;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @MapsId("id")
@@ -72,18 +66,16 @@ public class Employee {
 
     public Employee() {
         super();
-        loans = new ArrayList<Loan>();
     }
 
-    public Employee(Integer id, String dni, String firstName, String lastName, Date hireDate, String phone,
-            List<Loan> loans, User user) {
+    public Employee(Integer id, String dni, String firstName, String lastName, Date hireDate, String phone, User user) {
         this.id = id;
         this.dni = dni;
         this.firstName = firstName;
         this.lastName = lastName;
         this.hireDate = hireDate;
         this.phone = phone;
-        this.loans = loans;
+
         this.user = user;
     }
 
@@ -91,8 +83,9 @@ public class Employee {
         return id;
     }
 
-    public void setId(Integer id) {
+    public  Employee setId(Integer id) {
         this.id = id;
+        return this;
     }
 
     public String getDni() {
@@ -133,14 +126,6 @@ public class Employee {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public List<Loan> getLoans() {
-        return loans;
-    }
-
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
     }
 
     public User getUser() {

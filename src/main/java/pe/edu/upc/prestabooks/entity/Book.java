@@ -47,23 +47,21 @@ public class Book {
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
 	private List<Loan> loans;
 
-	public Book() {
-		super();
-		detailAuthorBooks = new ArrayList<DetailAuthorBook>();
-		loans = new ArrayList<Loan>();
-		authors = new ArrayList<Author>();
-	}
+	// No se guardan en la base de datos
 
 	@NotEmpty
 	@Transient
 	private List<Author> authors;
 
-	public List<Author> getAuthors() {
-		return authors;
-	}
+	// Funciones
 
-	public void setAuthors(List<Author> authors) {
-		this.authors = authors;
+	// Constructores
+
+	public Book() {
+		super();
+		detailAuthorBooks = new ArrayList<DetailAuthorBook>();
+		loans = new ArrayList<Loan>();
+		authors = new ArrayList<Author>();
 	}
 
 	public Book(int id, @NotEmpty(message = "Ingrese título") String title,
@@ -76,6 +74,16 @@ public class Book {
 		this.original_language = original_language;
 		this.stock = stock;
 		this.pages = pages;
+	}
+
+	// Getter and Setters
+
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(List<Author> authors) {
+		this.authors = authors;
 	}
 
 	public List<DetailAuthorBook> getDetailAuthorBooks() {

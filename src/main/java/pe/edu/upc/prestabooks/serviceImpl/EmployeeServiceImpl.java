@@ -18,6 +18,4 @@ public class EmployeeServiceImpl implements EmployeeService{
     public JpaRepository<Employee, Integer> getRepository() {
         return employeeRepository;
     }
-
-    
 }

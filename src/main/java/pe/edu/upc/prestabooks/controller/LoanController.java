@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import pe.edu.upc.prestabooks.entity.Loan;
+import pe.edu.upc.prestabooks.security.MyUserDetails;
 import pe.edu.upc.prestabooks.service.BookService;
 import pe.edu.upc.prestabooks.service.EmployeeService;
 import pe.edu.upc.prestabooks.service.LoanService;
@@ -55,12 +57,14 @@ public class LoanController {
 	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result, Model model,
-			SessionStatus status) throws Exception {
+			SessionStatus status, Authentication authentication) throws Exception {
 		if (result.hasErrors()) {
-			model.addAttribute("listReader", readerService.getAll());
+			model.addAttribute("listReaders", readerService.getAll());
 			model.addAttribute("listBooks", bookService.getAll());
 			return "loan/loan";
 		} else {
+			MyUserDetails loggedUser = (MyUserDetails) authentication.getPrincipal();
+			loan.setUser(loggedUser.getUser());
 			loanService.create(loan);
 			model.addAttribute("mensaje", "Se realizó bien!!");
 			status.setComplete();
@@ -92,7 +96,6 @@ public class LoanController {
 			model.put("mensaje", "Ocurrió un error");
 		}
 		return "redirect:/loans/list";
-
 	}
 
 	// @Secured("ROLE_ADMIN")
@@ -116,4 +119,13 @@ public class LoanController {
 		return "loan/updateLoan";
 	}
 
+	@GetMapping("/return/{id}")
+	public String returnLoan(@PathVariable(value = "id") Integer id, Model model) {
+		try {
+			loanService.returnLoan(id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return "redirect:/loans/list";
+	}
 }

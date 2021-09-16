@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -39,6 +38,9 @@ public class User {
 
     // Relaciones
 
+    @OneToMany(mappedBy="user", fetch=FetchType.LAZY)
+    private List<Loan> loans;
+
     @OneToOne(mappedBy = "user")
     private Employee employee;
 
@@ -48,6 +50,7 @@ public class User {
     public User() {
 		super();
 		authorities = new ArrayList<Authority>();
+        loans = new ArrayList<Loan>();
 	}
 
     public User(Integer id, String username, String password, Employee employee, List<Authority> authorities) {

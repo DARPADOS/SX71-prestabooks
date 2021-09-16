@@ -34,10 +34,13 @@
                     <form th:action="@{/loans/save}" th:object="${loan}" novalidate method="post">
 
                         <div class="form-group row">
-                            <label for="authors" class="col-sm-2 col-form-label">Lector:</label>
+                            <label for="reader" class="col-sm-2 col-form-label">Lector:</label>
                             <div class="col-sm-6">
-                                <select class="select1 form-control" name="state" multiple="multiple" th:field="*{reader}">
-                                    <option th:each="reader1:${listReaders}" th:value="${reader1}" th:text="${reader1.dni} + ': ' + ${reader1.first_name} + ' ' + ${reader1.last_name}"></option>
+                                <select class="select1 form-control" name="state" th:field="*{reader}">
+                                    <option th:value="${null}" selected disabled>Choose here</option>
+                                    <option th:each="reader1:${listReaders}" th:value="${{reader1}}"
+                                        th:text="${reader1.dni} + ': ' + ${reader1.first_name} + ' ' + ${reader1.last_name}">
+                                    </option>
                                 </select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('reader')}"
                                     th:errors="*{reader}"></small>
@@ -45,20 +48,48 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="authors" class="col-sm-2 col-form-label">Libro:</label>
+                            <label for="book" class="col-sm-2 col-form-label">Libro:</label>
                             <div class="col-sm-6">
-                                <select class="select2 form-control" name="state" multiple="multiple" th:field="*{book}">
-                                    <option th:each="book1:${listBooks}" th:value="${book1}" th:text="${book1.title} + ': ' + ${book1.id}"></option>
+                                <select class="select2 form-control" name="state" th:field="*{book}"
+                                    th:errorclass="'form-control alert-danger'">
+                                    <option th:each="book1:${listBooks}" th:value="${{book1}}"
+                                        th:text="${book1.title} + ': ' + ${book1.stock} + ' displonibles'"></option>
                                 </select>
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('book')}"
-                                    th:errors="*{book}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('book*')}"
+                                    th:errors="*{book*}"></small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="loanDate" class="col-sm-2 col-form-label">Fecha de prestamo:</label>
+                            <div class="col-sm-6">
+                                <input type="text" th:field="*{loanDate}"
+                                    class="form-control"
+                                    th:errorclass="'form-control alert-danger'" readonly/>
+                                <small
+                                    class="form-text text-danger"
+                                    th:if="${#fields.hasErrors('loanDate')}"
+                                    th:errors="*{loanDate}"></small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="returnLimitDate" class="col-sm-2 col-form-label">Fecha límite de devolución:</label>
+                            <div class="col-sm-6">
+                                <input type="text" th:field="*{returnLimitDate}"
+                                    class="form-control"
+                                    th:errorclass="'form-control alert-danger'" readonly/>
+                                <small
+                                    class="form-text text-danger"
+                                    th:if="${#fields.hasErrors('returnLimitDate')}"
+                                    th:errors="*{returnLimitDate}"></small>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col-sm-6">
                                 <input type="submit" value="Guardar" class="btn btn-secondary"></input>
-                                <a th:href="@{/books/list}" class="btn btn-danger">Cancelar</a>
+                                <a th:href="@{/loans/list}" class="btn btn-danger">Cancelar</a>
                             </div>
                         </div>
 
@@ -81,14 +112,15 @@
     <div th:replace="fragments/scripts :: links"></div>
     <div th:replace="fragments/scripts :: select2"></div>
     <div th:replace="fragments/scripts :: select2-bootstrap4-theme"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/i18n/es.js"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.select2').select2({
-                language: "es",
+                language: "es"
             });
             $('.select1').select2({
-                language: "es",
+                language: "es"
             });
         });
     </script>
