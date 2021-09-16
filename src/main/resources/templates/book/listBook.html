@@ -11,8 +11,7 @@
 		<div th:replace="fragments/sidebar :: sidebar"></div>
 
 		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column"
-			style="overflow-y: scroll; height: 100vh;">
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
@@ -24,8 +23,25 @@
 
 					<!-- Page Heading -->
 					<h1 class="h3 mb-4 text-gray-800">Libros</h1>
-					<a th:href="@{/books/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
-
+					<div class="row">
+						<div class="col-4"><a th:href="@{/books/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col">
+							<form th:action="@{/books/list}" method="get" th:object="${bookSearch}">
+								<div class="form-group row justify-content-center">
+									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
+									<div class="col-sm">
+										<input type="text" minlength="2	" class="form-control" th:field="*{title}" id="search" required></input>
+									</div>
+									<div class="col-sm">
+										<button type="submit" class="btn btn-primary">Buscar</button>
+										<a th:href="@{/books/list}" class="btn btn-danger mx-3">Cancelar</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<h5 th:if="${bookSearch.title}" th:text="'Resultados para: ' + ${bookSearch.title}"></h5>
+					
 					<hr class="sidebar-divider">
 
 					<table class="table table-striped">
@@ -47,10 +63,12 @@
 								<td th:text="${book.original_language}"></td>
 								<td th:text="${book.stock}"></td>
 								<td th:text="${book.pages}"></td>
-								<td ><p th:each="detail: ${book.detailAuthorBooks}" th:text="${detail.author.first_name} +' '+ ${detail.author.last_name}"></p></td>
-								<td><a th:href="@{/books/delete?id=}+${book.id}"
-									class="btn btn-danger"><i class="fa fa-trash"
-										aria-hidden="true"></i></a></td>
+								<td>
+									<p th:each="detail: ${book.detailAuthorBooks}"
+										th:text="${detail.author.firstName} +' '+ ${detail.author.lastName}"></p>
+								</td>
+								<td><a th:href="@{/books/delete?id=}+${book.id}" class="btn btn-danger"><i
+											class="fa fa-trash" aria-hidden="true"></i></a></td>
 
 							</tr>
 						</tbody>

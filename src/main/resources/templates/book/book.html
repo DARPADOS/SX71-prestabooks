@@ -47,7 +47,7 @@
                             <label for="authors" class="col-sm-2 col-form-label">Autor:</label>
                             <div class="col-sm-6">
                                 <select class="select2 form-control" name="state" multiple="multiple" th:field="*{authors}">
-                                    <option th:each="author:${listaAutores}" th:value="${{author}}" th:text="${author.first_name} + ' ' + ${author.last_name}"></option>
+                                    <option th:each="author:${listaAutores}" th:value="${{author}}" th:text="${author.firstName} + ' ' + ${author.firstName}"></option>
                                 </select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('authors')}"
                                     th:errors="*{authors}"></small>

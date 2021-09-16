@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
@@ -21,7 +22,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name="employee")
+@Table(name="employee",
+indexes = {@Index(columnList="last_name, first_name",name="employee_index_last_first_name")})
 public class Employee {
     
     // Campos

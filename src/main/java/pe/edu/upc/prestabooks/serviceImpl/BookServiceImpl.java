@@ -1,5 +1,7 @@
 package pe.edu.upc.prestabooks.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,12 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public JpaRepository<Book, Integer> getRepository() {
 		return bookRepository;
+	}
+
+
+	@Override
+	public List<Book> findByTitleOrAuthorName(String searchTerm) throws Exception {
+		return bookRepository.findByTitleOrAuthorName(searchTerm);
 	}
 
 }

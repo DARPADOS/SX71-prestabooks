@@ -73,16 +73,16 @@ public class initUserDB implements CommandLineRunner{
 
             Reader reader = new Reader();
             reader.setDni("12345678");
-            reader.setFirst_name("Emilio");
-            reader.setLast_name("Montecarlo");
+            reader.setFirstName("Emilio");
+            reader.setLastName("Montecarlo");
             reader.setEmail("emilio123@gmail.com");
             reader.setAddress("calle siempre viva");
 
             readerRepository.save(reader);
 
             Author author = new Author();
-            author.setFirst_name("Stephen");
-            author.setLast_name("King");
+            author.setFirstName("Stephen");
+            author.setLastName("King");
             author.setNationality("Estados Unidos");
             authorService.create(author);
 

@@ -23,7 +23,24 @@
 
                     <!-- Page Heading -->
 					<h1 class="h3 mb-4 text-gray-800">Empleados</h1>
-					<a th:href="@{/employees/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+					<div class="row">
+						<div class="col-4"><a th:href="@{/employees/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col">
+							<form th:action="@{/employees/list}" method="get" th:object="${employeeSearch}">
+								<div class="form-group row justify-content-center">
+									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
+									<div class="col-sm">
+										<input type="text" minlength="2	" class="form-control" th:field="*{firstName}" id="search" required></input>
+									</div>
+									<div class="col-sm">
+										<button type="submit" class="btn btn-primary">Buscar</button>
+										<a th:href="@{/employees/list}" class="btn btn-danger mx-3">Cancelar</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<h5 th:if="${employeeSearch.firstName}" th:text="'Resultados para: ' + ${employeeSearch.firstName}"></h5>
 
 					<hr class="sidebar-divider">
 

@@ -23,21 +23,21 @@ import pe.edu.upc.prestabooks.service.ReaderService;
 @Controller
 @RequestMapping("/readers")
 public class ReaderController {
-	
+
 	@Autowired
 	private ReaderService readerService;
-	
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/new")
 	public String newReader(Model model) {
 		model.addAttribute("reader", new Reader());
 		return "reader/reader";
 	}
-	
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
-	public String saveReader(@Valid @ModelAttribute(value = "reader") Reader reader, BindingResult result,
-			Model model, SessionStatus status) throws Exception {
+	public String saveReader(@Valid @ModelAttribute(value = "reader") Reader reader, BindingResult result, Model model,
+			SessionStatus status) throws Exception {
 		if (result.hasErrors()) {
 			return "reader/reader";
 		} else {
@@ -47,21 +47,28 @@ public class ReaderController {
 			return "redirect:/readers/list";
 		}
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/list")
-	public String listReader(Model model) {
+	public String listReader(@ModelAttribute("readerSearch") Reader readerSearch, Model model) {
 		try {
-			model.addAttribute("listaLectores", readerService.getAll());
+			if (readerSearch.getFirstName() != null) {
+				model.addAttribute("listaLectores", readerService.findByFirstNameOrLastName(readerSearch.getFirstName()));
+			} else {
+				model.addAttribute("listaLectores", readerService.getAll());
+				model.addAttribute("readerSearch", new Reader());
+			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
 		return "reader/listReader";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
 	public String deleteReadaer(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
 		try {
-			if(id!=null && id>0) {
+			if (id != null && id > 0) {
 				readerService.deleteById(id);
 				model.put("mensaje", "Se eliminó correctamente!");
 			}
@@ -71,17 +78,17 @@ public class ReaderController {
 		}
 		return "redirect:/readers/list";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
 	public String viewReader(@PathVariable(value = "id") int id, Model model) {
 		try {
 			Optional<Reader> reader = readerService.findById(id);
-			if(!reader.isPresent()) {
-				model.addAttribute("mensaje","Reader no existe");
+			if (!reader.isPresent()) {
+				model.addAttribute("mensaje", "Reader no existe");
 				return "redirect:/readers/list";
-			}
-			else {
-				model.addAttribute("reader",reader.get());
+			} else {
+				model.addAttribute("reader", reader.get());
 				return "reader/updateReader";
 			}
 		} catch (Exception e) {

@@ -74,9 +74,15 @@ public class LoanController {
 
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/list")
-	public String listLoan(Model model) {
+	public String listLoan(@ModelAttribute("loanSearch") Loan loanSearch, Model model) {
 		try {
-			model.addAttribute("listLoan", loanService.getAll());
+			if(loanSearch.getSearchTerm() != null ){
+				model.addAttribute("listLoan", loanService.findByDniOrNameOrBook(loanSearch.getSearchTerm(), loanSearch.getReturned()));
+			}
+			else {
+				model.addAttribute("listLoan", loanService.getAll());
+				model.addAttribute("loanSeach", new Loan());
+			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}

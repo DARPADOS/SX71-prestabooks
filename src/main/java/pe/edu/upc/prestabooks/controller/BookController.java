@@ -27,38 +27,38 @@ import pe.edu.upc.prestabooks.service.DetailAuthorBookService;
 @Controller
 @RequestMapping("/books")
 public class BookController {
-	
+
 	@Autowired
 	private BookService bookService;
-	
+
 	@Autowired
 	private AuthorService authorService;
 
 	@Autowired
 	private DetailAuthorBookService detailAuthorBookService;
-	
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/new")
-	public String newBook(Model model){
+	public String newBook(Model model) {
 		model.addAttribute("book", new Book());
 		try {
-			model.addAttribute("listaAutores",authorService.getAll());
+			model.addAttribute("listaAutores", authorService.getAll());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "book/book";
 	}
-	
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
-	public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result,
-			Model model, SessionStatus status) throws Exception {
+	public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
+			SessionStatus status) throws Exception {
 		if (result.hasErrors()) {
 			model.addAttribute("listaAutores", authorService.getAll());
 			return "book/book";
 		} else {
 
-			List<Author> authors = book.getAuthors(); 
+			List<Author> authors = book.getAuthors();
 			Book newBook = bookService.create(book);
 			detailAuthorBookService.addAuthorsWithBook(newBook, authors);
 
@@ -67,21 +67,29 @@ public class BookController {
 			return "redirect:/books/list";
 		}
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/list")
-	public String listBook(Model model) {
+	public String listBook(@ModelAttribute("bookSearch") Book bookSearch, Model model) {
 		try {
-			model.addAttribute("listaLibros", bookService.getAll());
+			if (bookSearch.getTitle() != null) {
+				model.addAttribute("listaLibros", bookService.findByTitleOrAuthorName(bookSearch.getTitle()));
+			}
+			else {
+				model.addAttribute("listaLibros", bookService.getAll());
+				model.addAttribute("bookSearch", new Book());
+			}
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}
 		return "book/listBook";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
 	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
 		try {
-			if(id!=null && id>0) {
+			if (id != null && id > 0) {
 				bookService.deleteById(id);
 				model.put("mensaje", "Se eliminó correctamente!!");
 			}
@@ -91,18 +99,18 @@ public class BookController {
 		}
 		return "redirect:/books/list";
 	}
-	//@Secured("ROLE_ADMIN")
+
+	// @Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
 	public String viewBook(@PathVariable(value = "id") int id, Model model) {
 		try {
 			Optional<Book> book = bookService.findById(id);
 			model.addAttribute("listaAutores", authorService.getAll());
-			if(!book.isPresent()) {
-				model.addAttribute("mensaje","Libro no existe");
+			if (!book.isPresent()) {
+				model.addAttribute("mensaje", "Libro no existe");
 				return "redirect:/books/list";
-			}
-			else {
-				model.addAttribute("book",book.get());
+			} else {
+				model.addAttribute("book", book.get());
 				return "book/updateBook";
 			}
 		} catch (Exception e) {

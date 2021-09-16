@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -50,8 +51,8 @@ public class EmployeeController {
 
     @Secured("ROLE_ADMIN")
     @PostMapping("/save")
-    public String saveEmployee(@Valid Employee employee, BindingResult result1, @Valid User user, BindingResult result2, Model model)
-            throws Exception {
+    public String saveEmployee(@Valid Employee employee, BindingResult result1, @Valid User user, BindingResult result2,
+            Model model) throws Exception {
         if (result1.hasErrors() || result2.hasErrors()) {
             return "employee/employee";
         } else {
@@ -72,11 +73,16 @@ public class EmployeeController {
 
     @Secured("ROLE_ADMIN")
     @GetMapping("/list")
-    public String listBook(Model model) {
+    public String listBook(@ModelAttribute("employeeSearch") Employee employeeSearch, Model model) {
         try {
-            model.addAttribute("listEmployees", employeeService.getAll());
+            if (employeeSearch.getFirstName() != null) {
+                model.addAttribute("listEmployees", employeeService.findByFirstNameLikeOrLastNameLike(employeeSearch.getFirstName()));
+            } else {
+                model.addAttribute("listEmployees", employeeService.getAll());
+                model.addAttribute("employeeSearch", new Employee());
+            }
         } catch (Exception e) {
-            // model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", e.getMessage());
         }
         return "employee/list";
     }

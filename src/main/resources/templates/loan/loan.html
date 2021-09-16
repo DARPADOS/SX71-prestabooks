@@ -39,7 +39,7 @@
                                 <select class="select1 form-control" name="state" th:field="*{reader}">
                                     <option th:value="${null}" selected disabled>Choose here</option>
                                     <option th:each="reader1:${listReaders}" th:value="${{reader1}}"
-                                        th:text="${reader1.dni} + ': ' + ${reader1.first_name} + ' ' + ${reader1.last_name}">
+                                        th:text="${reader1.dni} + ': ' + ${reader1.firstName} + ' ' + ${reader1.lastName}">
                                     </option>
                                 </select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('reader')}"

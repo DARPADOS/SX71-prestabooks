@@ -8,13 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 
 @Entity
-@Table(name = "Author")
+@Table(name = "Author",
+indexes = {@Index(columnList="last_name, first_name",name="author_index_last_first_name")})
 public class Author {
 
 	@Id
@@ -22,12 +25,14 @@ public class Author {
 	private Integer id;
 	
 	@NotEmpty(message = "Ingrese nombres")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
 	@Column(name = "first_name", nullable =false , length=25)
-	private String first_name;
+	private String firstName;
 	
 	@NotEmpty(message = "Ingrese apellidos")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
 	@Column(name = "last_name", nullable =false , length=25)
-	private String last_name;
+	private String lastName;
 	
 	@NotEmpty(message = "Ingrese nacionalidad")
 	@Column(name = "nationality", nullable =false , length=50)
@@ -47,8 +52,8 @@ public class Author {
 			@NotEmpty(message = "Ingrese nacionalidad") String nationality) {
 		super();
 		this.id = id;
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = first_name;
+		this.lastName = last_name;
 		this.nationality = nationality;
 	}
 
@@ -68,20 +73,20 @@ public class Author {
 		this.id = id;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getNationality() {

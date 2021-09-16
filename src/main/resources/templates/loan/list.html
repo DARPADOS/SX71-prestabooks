@@ -23,7 +23,28 @@
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-4 text-gray-800">Prestamos</h1>
-                    <a th:href="@{/loans/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+                    <div class="row">
+						<div class="col-4"><a th:href="@{/loans/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col">
+							<form th:action="@{/loans/list}" method="get" th:object="${loanSearch}">
+								<div class="form-group row justify-content-center">
+									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
+									<div class="col-sm">
+										<input type="text" minlength="3" class="form-control" th:field="*{searchTerm}" id="search" required></input>
+									</div>
+                                    <div class="col-2 my-auto text-center">
+                                            <input type="checkbox" class="form-check-input" id="isReturned" th:field="*{returned}">
+                                            <label class="form-check-label py-auto" for="isReturned">Devuelto</label>
+                                    </div>
+									<div class="col-sm">                                        
+										<button type="submit" class="btn btn-primary">Buscar</button>
+										<a th:href="@{/loans/list}" class="btn btn-danger mx-3">Cancelar</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+                    <h5 th:if="${loanSearch.searchTerm}" th:text="'Resultados para: ' + ${loanSearch.searchTerm}"></h5>
 
                     <hr class="sidebar-divider">
 
@@ -47,7 +68,7 @@
                                 <td th:text="${loan.id}"></td>
                                 <td th:text="${loan.book.title}"></td>
                                 <td th:text="${loan.reader.dni}"></td>
-                                <td th:text="${loan.reader.first_name} +' '+ ${loan.reader.last_name}"></td>
+                                <td th:text="${loan.reader.firstName} +' '+ ${loan.reader.lastName}"></td>
                                 <td th:text="${#dates.format(loan.loanDate, 'dd-MMM-yyyy HH:mm')}"></td>
                                 <td th:text="${#dates.format(loan.returnLimitDate, 'dd-MMM-yyyy HH:mm')}"></td>
                                 <td 

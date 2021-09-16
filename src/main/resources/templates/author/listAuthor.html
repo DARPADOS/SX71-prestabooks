@@ -23,7 +23,24 @@
 
                     <!-- Page Heading -->
 					<h1 class="h3 mb-4 text-gray-800">Autores</h1>
-					<a th:href="@{/authors/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+					<div class="row">
+						<div class="col-4"><a th:href="@{/authors/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col">
+							<form th:action="@{/authors/list}" method="get" th:object="${authorSearch}">
+								<div class="form-group row justify-content-center">
+									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
+									<div class="col-sm">
+										<input type="text" minlength="3" class="form-control" th:field="*{firstName}" id="search" required></input>
+									</div>
+									<div class="col-sm">
+										<button type="submit" class="btn btn-primary">Buscar</button>
+										<a th:href="@{/authors/list}" class="btn btn-danger mx-3">Cancelar</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+                    <h5 th:if="${authorSearch.firstName}" th:text="'Resultados para: ' + ${authorSearch.firstName}"></h5>
 
 					<hr class="sidebar-divider">
 
@@ -40,8 +57,8 @@
 						<tbody>
 							<tr th:each="author: ${listaAutores}">
 								<td th:text="${author.id}"></td>
-								<td th:text="${author.first_name}"></td>
-                                <td th:text="${author.last_name}"></td>
+								<td th:text="${author.firstName}"></td>
+                                <td th:text="${author.lastName}"></td>
 								<td th:text="${author.nationality}"></td>
 								<td><a th:href="@{/authors/delete?id=}+${author.id}"
 										class="btn btn-danger"><i class="fa fa-trash"

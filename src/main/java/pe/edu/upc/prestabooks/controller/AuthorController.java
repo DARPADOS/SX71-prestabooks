@@ -48,9 +48,15 @@ public class AuthorController {
 	}
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/list")
-	public String listAuthor(Model model) {
+	public String listAuthor(@ModelAttribute("authorSearch") Author authorSearch, Model model) {
 		try {
-			model.addAttribute("listaAutores", authorService.getAll());
+			if(authorSearch.getFirstName() != null){
+				model.addAttribute("listaAutores", authorService.findByFirstnameOrLastName(authorSearch.getFirstName()));
+			}
+			else {
+				model.addAttribute("listaAutores", authorService.getAll());
+				model.addAttribute("authorSearch", new Author());
+			}	
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 		}

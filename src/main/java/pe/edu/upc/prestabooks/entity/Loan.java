@@ -71,6 +71,8 @@ public class Loan {
 	@Min(value = 1, message = "No hay stock del Libro")
 	private Integer bookStock;
 
+	private String searchTerm;
+
 
 	public Loan() {
 		super();
@@ -125,6 +127,22 @@ public class Loan {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public Integer getBookStock() {
+		return bookStock;
+	}
+
+	public void setBookStock(Integer bookStock) {
+		this.bookStock = bookStock;
+	}
+
+	public String getSearchTerm() {
+		return searchTerm;
+	}
+
+	public void setSearchTerm(String searchTerm) {
+		this.searchTerm = searchTerm;
 	}
 
 	public Date getReturnLimitDate() {

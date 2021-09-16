@@ -23,7 +23,24 @@
 
                     <!-- Page Heading -->
 					<h1 class="h3 mb-4 text-gray-800">Lectores</h1>
-					<a th:href="@{/readers/new/}" class="btn btn-secondary btn-xs">Nuevo</a>
+					<div class="row">
+						<div class="col-4"><a th:href="@{/readers/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col">
+							<form th:action="@{/readers/list}" method="get" th:object="${readerSearch}">
+								<div class="form-group row justify-content-center">
+									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
+									<div class="col-sm">
+										<input type="text" minlength="3" class="form-control" th:field="*{firstName}" id="search" required></input>
+									</div>
+									<div class="col-sm">
+										<button type="submit" class="btn btn-primary">Buscar</button>
+										<a th:href="@{/readers/list}" class="btn btn-danger mx-3">Cancelar</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+                    <h5 th:if="${readerSearch.firstName}" th:text="'Resultados para: ' + ${readerSearch.firstName}"></h5>
 
 					<hr class="sidebar-divider">
 
@@ -43,8 +60,8 @@
 							<tr th:each="reader: ${listaLectores}">
 								<td th:text="${reader.id}"></td>
 								<td th:text="${reader.dni}"></td>
-								<td th:text="${reader.first_name}"></td>
-                                <td th:text="${reader.last_name}"></td>
+								<td th:text="${reader.firstName}"></td>
+                                <td th:text="${reader.lastName}"></td>
 								<td th:text="${reader.email}"></td>
 								<td th:text="${reader.address}"></td>
 								<td><a th:href="@{/readers/delete?id=}+${reader.id}"
