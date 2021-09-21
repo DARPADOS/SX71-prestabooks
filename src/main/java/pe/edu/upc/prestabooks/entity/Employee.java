@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Pattern;
@@ -24,6 +26,8 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name="employee",
 indexes = {@Index(columnList="last_name, first_name",name="employee_index_last_first_name")})
+@SQLDelete(sql = "UPDATE employee set deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Employee {
     
     // Campos
@@ -58,10 +62,20 @@ public class Employee {
     @Column(name = "phone")
     private String phone; 
     
+    private Boolean deleted = Boolean.FALSE;
+
     // Relaciones
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    @OneToOne()
     @MapsId("id")
     @JoinColumn(name="id")
     private User user;

@@ -16,10 +16,16 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "Book",
 indexes = {@Index(columnList = "title",name = "book_index_title")})
+@SQLDelete(sql = "UPDATE book set deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Book {
 	
 	@Id
@@ -41,6 +47,8 @@ public class Book {
 	@NotNull(message = "Ingrese el número de páginas")
 	@Column(name = "pages", nullable =false)
 	private Integer pages;
+
+	private Boolean deleted = Boolean.FALSE;
 	
 	//Relaciones
 	@OneToMany(mappedBy = "book", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -55,7 +63,39 @@ public class Book {
 	@Transient
 	private List<Author> authors;
 
+	@Pattern(regexp = "^[1-9]\\d*", message = "Ingrese el stock correctamente")
+	@Transient
+	private String stockString;
+
+	@Pattern(regexp = "\\d{3,4}|^[2-9][0-9]", message = "Ingrese el número de páginas correctamente")
+	@Transient
+	private String pagesString;
+
 	// Funciones
+	public String getStockString() {
+		return stockString;
+	}
+
+	public void setStockString(String stockString) {
+		this.stockString = stockString;
+		try {
+			this.stock = Integer.parseInt(stockString);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+	}
+	public String getPagesString() {
+		return pagesString;
+	}
+
+	public void setPagesString(String pagesString) {
+		this.pagesString = pagesString;
+		try {
+			this.pages = Integer.parseInt(pagesString);
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+	}
 
 	// Constructores
 
@@ -79,6 +119,15 @@ public class Book {
 	}
 
 	// Getter and Setters
+	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 
 	public List<Author> getAuthors() {
 		return authors;

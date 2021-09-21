@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -28,6 +29,8 @@ public class User {
     private Integer id;
     
     @NotBlank
+    @Size(max = 20, min = 5, message = "Ingrese el nombre de usuario correctamente.")
+    @Pattern(regexp = "[a-zA-Z0-9]+", message ="Ingrese el nombre de usuario correctamente.")
     @Column(name="username", length=20, nullable=false)
 	private String username;
 	

@@ -3,6 +3,7 @@ package pe.edu.upc.prestabooks.controller;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pe.edu.upc.prestabooks.entity.Employee;
 import pe.edu.upc.prestabooks.entity.User;
@@ -55,7 +58,7 @@ public class EmployeeController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/save")
     public String saveEmployee(@Valid Employee employee, BindingResult result1, @Valid User user, BindingResult result2,
-            Model model) throws Exception {
+            Model model,  RedirectAttributes redirectAttributes) throws Exception {
         if (result1.hasErrors() || result2.hasErrors()) {
             return "employee/employee";
         } else {
@@ -63,7 +66,7 @@ public class EmployeeController {
                 User userCreated = userService.registerNewEmployeeAccount(user);
                 employee.setId(userCreated.getId());
                 employeeService.create(employee);
-                model.addAttribute("mensaje", "Se registró exitosamente!!");
+                redirectAttributes.addFlashAttribute("mensaje", "Se registró el empleado satisfactoriamente.");
                 return "redirect:/employees/list";
             } catch (Exception e) {
                 e.getStackTrace();
@@ -75,7 +78,7 @@ public class EmployeeController {
     }
     @PostMapping("/update")
     public String updateEmployee(@Valid Employee employee, BindingResult result1,
-            Model model) throws Exception {
+            Model model, RedirectAttributes redirectAttributes) throws Exception {
         if (result1.hasErrors()) {
             return "employee/updateEmployee";
         } else {
@@ -83,7 +86,8 @@ public class EmployeeController {
                 //User userCreated = userService.registerNewEmployeeAccount(user);
                 //employee.setId(userCreated.getId());
                 employeeService.create(employee);
-                model.addAttribute("mensaje", "Se registró exitosamente!!");
+                redirectAttributes.addFlashAttribute("mensaje", "Se modificó el empleado satisfactoriamente.");
+
                 return "redirect:/employees/list";
             } catch (Exception e) {
                 e.getStackTrace();
@@ -108,15 +112,28 @@ public class EmployeeController {
         }
         return "employee/list";
     }
+    @RequestMapping("/delete")
+	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
+		try {
+			if (id != null && id > 0) {
+				employeeService.deleteById(id);
+				redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el empleado correctamente.");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			model.put("mensaje", "Ocurrió un error");
+		}
+		return "redirect:/employees/list";
+	}
     
  // @Secured("ROLE_ADMIN")
  	@GetMapping("/detalle/{id}")
- 	public String viewEmployee(@PathVariable(value = "id") int id, Model model) {
+ 	public String viewEmployee(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
  		try {
  			Optional<Employee> employee = employeeService.findById(id);
  			model.addAttribute("listEmployees", employeeService.getAll());
  			if (!employee.isPresent()) {
- 				model.addAttribute("mensaje", "Empleado no existe");
+                redirectAttributes.addFlashAttribute("mensaje", "El empleado no existe.");
  				return "redirect:/employees/list";
  			} else {
  				model.addAttribute("employee", employee.get());

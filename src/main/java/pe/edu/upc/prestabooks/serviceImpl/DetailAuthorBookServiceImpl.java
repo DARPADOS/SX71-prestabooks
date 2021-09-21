@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.entity.Book;
@@ -28,6 +29,17 @@ public class DetailAuthorBookServiceImpl implements DetailAuthorBookService{
 		for (Author author : authors) {
 			this.create(new DetailAuthorBook(author, book));
 		}		
+	}
+
+	@Override
+	@Transactional
+	public void updateAuthorsWithBook(Book book, List<Author> authors) throws Exception {
+		if(!detailAuthorBookRepository.findByBook(book).isEmpty()){
+			detailAuthorBookRepository.deleteByBookId(book.getId());
+		}
+		for (Author author : authors) {
+			this.create(new DetailAuthorBook(author, book));
+		}	
 	}
 
 }

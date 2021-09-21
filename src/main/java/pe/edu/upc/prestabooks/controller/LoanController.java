@@ -1,9 +1,5 @@
 package pe.edu.upc.prestabooks.controller;
 
-import java.util.Map;
-
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pe.edu.upc.prestabooks.entity.Loan;
 import pe.edu.upc.prestabooks.security.MyUserDetails;
 import pe.edu.upc.prestabooks.service.BookService;
-import pe.edu.upc.prestabooks.service.EmployeeService;
 import pe.edu.upc.prestabooks.service.LoanService;
 import pe.edu.upc.prestabooks.service.ReaderService;
 
@@ -37,9 +32,6 @@ public class LoanController {
 
 	@Autowired
 	private BookService bookService;
-
-	@Autowired
-	private EmployeeService employeeService;
 
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/new")
@@ -57,7 +49,7 @@ public class LoanController {
 	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveLoan(@Valid @ModelAttribute(value = "loan") Loan loan, BindingResult result, Model model,
-			SessionStatus status, Authentication authentication) throws Exception {
+			SessionStatus status, Authentication authentication, RedirectAttributes redirectAttributes) throws Exception {
 		if (result.hasErrors()) {
 			model.addAttribute("listReaders", readerService.getAll());
 			model.addAttribute("listBooks", bookService.getAll());
@@ -66,7 +58,7 @@ public class LoanController {
 			MyUserDetails loggedUser = (MyUserDetails) authentication.getPrincipal();
 			loan.setUser(loggedUser.getUser());
 			loanService.create(loan);
-			model.addAttribute("mensaje", "Se realizó bien!!");
+			redirectAttributes.addFlashAttribute("mensaje", "Se registro el préstamo satisfactoriamente.");
 			status.setComplete();
 			return "redirect:/loans/list";
 		}
@@ -90,68 +82,29 @@ public class LoanController {
 	}
 
 	// @Secured("ROLE_ADMIN")
+	/*
 	@RequestMapping("/delete")
-	public String deleteLoan(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
+	public String deleteLoan(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			if (id != null && id > 0) {
 				loanService.deleteById(id);
-				model.put("mensaje", "Se eliminó correctamente!!");
+				redirectAttributes.addFlashAttribute("mensaje", "Se registro el préstamo satisfactoriamente.");
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			model.put("mensaje", "Ocurrió un error");
 		}
 		return "redirect:/loans/list";
-	}
-
-	// @Secured("ROLE_ADMIN")
-	@GetMapping("/detalle/{id}")
-	public String viewLoan(@PathVariable(value = "id") int id, Model model) {
-		try {
-			Optional<Loan> loan = loanService.findById(id);
-			model.addAttribute("listaLectores", readerService.getAll());
-			model.addAttribute("listaLibros", bookService.getAll());
-			model.addAttribute("listaEmpleados", employeeService.getAll());
-			if (!loan.isPresent()) {
-				model.addAttribute("mensaje", "Reserva no existe");
-				return "redirect:/loans/list";
-			} else {
-				model.addAttribute("loan", loan.get());
-				return "loan/updateLoan";
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return "loan/updateLoan";
-	}
+	}*/
 
 	@GetMapping("/return/{id}")
-	public String returnLoan(@PathVariable(value = "id") Integer id, Model model) {
+	public String returnLoan(@PathVariable(value = "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			loanService.returnLoan(id);
+			redirectAttributes.addFlashAttribute("mensaje", "Se registró la devolución satisfactoriamente.");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return "redirect:/loans/list";
-	}
-	@RequestMapping("/reports")
-	public String Report()
-	{
-		return "reports/reports";
-	}
-	@RequestMapping("/report1")
-	public String report1(Map<String, Object> model) {
-		model.put("listReport1", loanService.listReport1());
-		return "reports/report1";
-	}
-	@RequestMapping("/report2")
-	public String report2(Map<String, Object> model) {
-		model.put("listReport2", loanService.listReport2());
-		return "reports/report2";
-	}
-	@RequestMapping("/report3")
-	public String report3(Map<String, Object> model) {
-		model.put("listReport3", loanService.listReport3());
-		return "reports/report3";
 	}
 }

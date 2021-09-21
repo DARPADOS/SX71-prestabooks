@@ -16,9 +16,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name = "Reader",
 indexes = {@Index(columnList="last_name, first_name",name="reader_index_last_first_name")})
+@SQLDelete(sql = "UPDATE reader set deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Reader {
 	
 	@Id
@@ -49,6 +54,8 @@ public class Reader {
 	@Column(name = "address", nullable =false , length=150)
 	private String address;
 	
+	private Boolean deleted = Boolean.FALSE;
+
 	// Relaciones
 	@OneToMany(mappedBy = "reader", fetch = FetchType.LAZY)
 	private List<Loan> loans;
@@ -92,6 +99,14 @@ public class Reader {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public int getId() {

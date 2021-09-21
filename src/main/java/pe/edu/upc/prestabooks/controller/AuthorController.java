@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.service.AuthorService;
@@ -36,16 +37,30 @@ public class AuthorController {
 	//@Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveAuthor(@Valid @ModelAttribute(value = "author") Author author, BindingResult result,
-			Model model, SessionStatus status) throws Exception {
+			Model model, SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
 		if (result.hasErrors()) {
 			return "author/author";
 		} else {
 			authorService.create(author);
-			model.addAttribute("mensaje", "Se realizó bien!!");
+			redirectAttributes.addFlashAttribute("mensaje", "Se registró el autor satisfactoriamente.");
 			status.setComplete();
 			return "redirect:/authors/list";
 		}
 	}
+
+	@PostMapping("/update")
+	public String updateAuthor(@Valid @ModelAttribute(value = "author") Author author, BindingResult result,
+			Model model, SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
+		if (result.hasErrors()) {
+			return "author/updateAuthor";
+		} else {
+			authorService.create(author);
+			redirectAttributes.addFlashAttribute("mensaje", "Se modificó el autor satisfactoriamente.");
+			status.setComplete();
+			return "redirect:/authors/list";
+		}
+	}
+
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/list")
 	public String listAuthor(@ModelAttribute("authorSearch") Author authorSearch, Model model) {
@@ -64,11 +79,11 @@ public class AuthorController {
 	}
 	//@Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
-	public String deleteAuthor(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
+	public String deleteAuthor(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			if(id!=null && id>0) {
 				authorService.deleteById(id);
-				model.put("mensaje", "Se eliminó correctamente!");
+				redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el autor correctamente.");
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -78,12 +93,12 @@ public class AuthorController {
 	}
 	//@Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
-	public String viewAuthor(@PathVariable(value = "id") int id, Model model) {
+	public String viewAuthor(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			Optional<Author> author = authorService.findById(id);
 			//model.addAttribute("listaAutores", authorService.getAll());
 			if(!author.isPresent()) {
-				model.addAttribute("mensaje","Author no existe");
+				redirectAttributes.addFlashAttribute("mensaje", "El autor no existe.");
 				return "redirect:/authors/list";
 			}
 			else {

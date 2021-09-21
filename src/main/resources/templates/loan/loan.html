@@ -37,7 +37,7 @@
                             <label for="reader" class="col-sm-2 col-form-label">Lector:</label>
                             <div class="col-sm-6">
                                 <select class="select1 form-control" name="state" th:field="*{reader}">
-                                    <option th:value="${null}" selected disabled>Choose here</option>
+                                    <option th:value="${null}" selected>Seleccione un lector</option>
                                     <option th:each="reader1:${listReaders}" th:value="${{reader1}}"
                                         th:text="${reader1.dni} + ': ' + ${reader1.firstName} + ' ' + ${reader1.lastName}">
                                     </option>
@@ -52,6 +52,7 @@
                             <div class="col-sm-6">
                                 <select class="select2 form-control" name="state" th:field="*{book}"
                                     th:errorclass="'form-control alert-danger'">
+                                    <option th:value="${null}" selected>Seleccione un libro</option>
                                     <option th:each="book1:${listBooks}" th:value="${{book1}}"
                                         th:text="${book1.title} + ': ' + ${book1.stock} + ' displonibles'"></option>
                                 </select>

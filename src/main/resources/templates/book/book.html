@@ -65,17 +65,17 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="stock" class="col-sm-2 col-form-label">Cantidad:</label>
+                            <label for="stockString" class="col-sm-2 col-form-label">Stock:</label>
                             <div class="col-sm-6">
-                                <input type="text" th:field="*{stock}" class="form-control"
+                                <input type="text" th:field="*{stockString}" class="form-control"
                                     th:errorclass="'form-control alert-danger'" />
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('stock')}"
-                                    th:errors="*{stock}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('stockString')}"
+                                    th:errors="*{stockString}"></small>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="pages" class="col-sm-2 col-form-label">Paginas:</label>
+                            <label for="pages" class="col-sm-2 col-form-label">Número de Paginas:</label>
                             <div class="col-sm-6">
                                 <input type="text" th:field="*{pages}" class="form-control"
                                     th:errorclass="'form-control alert-danger'" />

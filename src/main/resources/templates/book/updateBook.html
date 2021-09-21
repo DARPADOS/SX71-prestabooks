@@ -33,7 +33,7 @@
 						</ul>
 					</div>
 
-					<form th:action="@{/books/save}" novalidate method="post">
+					<form th:action="@{/books/update}" novalidate method="post">
 
 						<div th:object="${book}">
 
@@ -63,7 +63,7 @@
 								<div class="col-sm-6">
 									<select class="select2 form-control" name="state"
 										multiple="multiple" th:field="*{authors}">
-										<option th:each="author:${listaAutores}"
+										<option th:each="author:${listaAutores}" class="authorOption"
 											th:value="${{author}}"
 											th:text="${author.firstName} + ' ' + ${author.firstName}"></option>
 									</select> <small class="form-text text-danger"
@@ -132,11 +132,32 @@
 
 	<div th:replace="fragments/scripts :: links"></div>
 
-	<script>
-        $('.input-group.date').datepicker({
-            autoclose: true,
-            todayHighlight: true
+    <div th:replace="fragments/scripts :: select2"></div>
+    <div th:replace="fragments/scripts :: select2-bootstrap4-theme"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                language: "es",
+            });
+
+
         });
+
     </script>
+
+	<script th:inline="javascript">
+		var list = [];
+		/*[# th:each="author:${book.authors}"]*/
+  			var item =/*[[${author}]]*/ 'default';
+			list.push(item.id);
+		/*[/]*/
+			list.forEach(element => console.log(element))
+			console.log(list)
+
+			$('.select2').val(list)
+			$('.select2').trigger('change')
+	</script>
+
 </body>
 </html>

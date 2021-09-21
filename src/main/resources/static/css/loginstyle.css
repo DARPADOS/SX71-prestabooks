@@ -16,7 +16,7 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url(https://cdn.wallpapersafari.com/0/80/KIiEkW.jpg);
+    background-image: url('../img/fondo_login.webp');
     background-position: center;
     background-size: cover;
     background-color: rgba(45, 255, 255, 0.74);

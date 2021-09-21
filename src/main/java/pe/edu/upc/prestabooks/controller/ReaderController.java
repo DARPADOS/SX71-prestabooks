@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pe.edu.upc.prestabooks.entity.Reader;
 import pe.edu.upc.prestabooks.service.ReaderService;
@@ -37,12 +38,25 @@ public class ReaderController {
 	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveReader(@Valid @ModelAttribute(value = "reader") Reader reader, BindingResult result, Model model,
-			SessionStatus status) throws Exception {
+			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
 		if (result.hasErrors()) {
 			return "reader/reader";
 		} else {
 			readerService.create(reader);
-			model.addAttribute("mensaje", "Se realizó bien!");
+			redirectAttributes.addFlashAttribute("mensaje", "Se registró al lector satisfactoriamente.");
+			status.setComplete();
+			return "redirect:/readers/list";
+		}
+	}
+
+	@PostMapping("/update")
+	public String updateReader(@Valid @ModelAttribute(value = "reader") Reader reader, BindingResult result, Model model,
+			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
+		if (result.hasErrors()) {
+			return "reader/updateReader";
+		} else {
+			readerService.create(reader);
+			redirectAttributes.addFlashAttribute("mensaje", "Se modificó al lector satisfactoriamente.");
 			status.setComplete();
 			return "redirect:/readers/list";
 		}
@@ -66,11 +80,11 @@ public class ReaderController {
 
 	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
-	public String deleteReadaer(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
+	public String deleteReadaer(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			if (id != null && id > 0) {
 				readerService.deleteById(id);
-				model.put("mensaje", "Se eliminó correctamente!");
+				redirectAttributes.addFlashAttribute("mensaje", "Se eliminó al lector correctamente.");
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -81,12 +95,12 @@ public class ReaderController {
 
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
-	public String viewReader(@PathVariable(value = "id") int id, Model model) {
+	public String viewReader(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			Optional<Reader> reader = readerService.findById(id);
 			model.addAttribute("listaLectores", readerService.getAll());
 			if (!reader.isPresent()) {
-				model.addAttribute("mensaje", "Reader no existe");
+				redirectAttributes.addFlashAttribute("mensaje", "El lector no existe.");
 				return "redirect:/readers/list";
 			} else {
 				model.addAttribute("reader", reader.get());

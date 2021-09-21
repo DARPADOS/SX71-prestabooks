@@ -11,8 +11,7 @@
 		<div th:replace="fragments/sidebar :: sidebar"></div>
 
 		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column"
-			style="overflow-y: scroll; height: 100vh;">
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
@@ -51,22 +50,24 @@
 					</div>
 					<!-- /.container-fluid -->
 				</div>
-				<!-- End of Main Content -->
-				<!-- Footer -->
-				<div th:replace="fragments/footer :: footer"></div>
-				<!-- End of Footer -->
 			</div>
-			<!-- End of Content Wrapper -->
+			<!-- End of Main Content -->
+			<!-- Footer -->
+			<div th:replace="fragments/footer :: footer"></div>
+			<!-- End of Footer -->
 		</div>
-		<!-- End of Page Wrapper -->
+		<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
 
-		<div th:replace="fragments/scripts :: links"></div>
+	<div th:replace="fragments/scripts :: links"></div>
 
-		<script>
-        $('.input-group.date').datepicker({
-            autoclose: true,
-            todayHighlight: true
-        });
-    </script>
+	<script>
+		$('.input-group.date').datepicker({
+			autoclose: true,
+			todayHighlight: true
+		});
+	</script>
 </body>
+
 </html>

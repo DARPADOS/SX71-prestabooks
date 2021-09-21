@@ -14,10 +14,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 
 @Entity
 @Table(name = "Author",
 indexes = {@Index(columnList="last_name, first_name",name="author_index_last_first_name")})
+@SQLDelete(sql = "UPDATE author set deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class Author {
 
 	@Id
@@ -26,19 +33,30 @@ public class Author {
 	
 	@NotEmpty(message = "Ingrese nombres")
 	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
-	@Column(name = "first_name", nullable =false , length=25)
+	@Column(name = "first_name", nullable =false , length=50)
 	private String firstName;
 	
 	@NotEmpty(message = "Ingrese apellidos")
 	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
-	@Column(name = "last_name", nullable =false , length=25)
+	@Column(name = "last_name", nullable =false , length=50)
 	private String lastName;
 	
 	@NotEmpty(message = "Ingrese nacionalidad")
 	@Column(name = "nationality", nullable =false , length=50)
 	private String nationality;
 
+	private Boolean deleted = Boolean.FALSE;
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	// Relaciones
+	@JsonIgnore
 	@OneToMany(mappedBy = "author")
 	private List<DetailAuthorBook> detailAuthorBooks;
 

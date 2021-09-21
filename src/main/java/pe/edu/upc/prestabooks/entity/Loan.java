@@ -14,7 +14,9 @@ import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,17 +62,21 @@ public class Loan {
 	private User user;
 	
 	@ManyToOne
+	@NotNull(message = "Tiene que elegir un lector.")
 	@JoinColumn(name = "reader_id", nullable = false)
 	private Reader reader;
 	
 	@ManyToOne
+	@NotNull(message = "Tiene que elegir un libro.")
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 
 	// Transitorios
+	@Transient
 	@Min(value = 1, message = "No hay stock del Libro")
 	private Integer bookStock;
 
+	@Transient
 	private String searchTerm;
 
 

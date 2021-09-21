@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<div th:replace="fragments/head :: head('Inicio')"></div>
+<div th:replace="fragments/head :: head('Reportes')"></div>
 
 <body id="page-top">
 
@@ -11,8 +11,7 @@
 		<div th:replace="fragments/sidebar :: sidebar"></div>
 
 		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column"
-			style="overflow-y: scroll; height: 100vh;">
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
@@ -25,37 +24,47 @@
 					<!-- Page Heading -->
 
 					<div class="content container">
-					<div class="cinforeport">
-						<h3 class="title-content">Reportes</h3>
-					</div>
-				</div>
-
-				<div class="bg row">
-
-
-					<div class="content container">
-						<div class="creportes d-flex justify-content-around">
-							<div class="cproyecto ">
-								<h3 class="tproyecto ">N&uacutemero de pr&eacutestamos por empleado</h3>
-								<a class="lnikp " th:href="@{/loans/report1}">Ver
-									Reporte</a>
-							</div>
-							<div class="cproyecto ">
-								<h3 class="tproyecto ">N&uacutemero de pr&eacutestamos por libro</h3>
-								<a class="lnikp " th:href="@{/loans/report2}">Ver
-									Reporte</a>
-							</div>
-							<div class="cproyecto ">
-								<h3 class="tproyecto ">N&uacutemero de pr&eacutestamos por lector</h3>
-								<a class="lnikp " th:href="@{/loans/report3}">Ver
-									Reporte</a>
-							</div>
+						<div class="cinforeport">
+							<h3 class="title-content">Reportes</h3>
 						</div>
-						
 
+						<div class="card-deck">
+							<div class="card text-center">
+								<div class="card-header">
+								  Reporte 1
+								</div>
+								<div class="card-body">
+								  <h5 class="card-title">Número de préstamos <br> por empleado</h5>
+								  <p class="card-text">Este reporte mostrará la cantidad de préstamos realizados por cada empleado.</p>
+								  <a th:href="@{/reports/report1}" class="btn btn-primary">Ir al Reporte</a>
+								</div>
+							  </div>
+							  <div class="card text-center">
+								<div class="card-header">
+								  Reporte 2
+								</div>
+								<div class="card-body">
+								  <h5 class="card-title">Número de préstamos <br> por libro</h5>
+								  <p class="card-text">Este reporte mostrará la cantidad de préstamos realizados de cada libro.</p>
+								  <a th:href="@{/reports/report2}" class="btn btn-primary">Ir al Reporte</a>
+								</div>
+							  </div>
+							  <div class="card text-center">
+								<div class="card-header">
+								  Reporte 3
+								</div>
+								<div class="card-body">
+								  <h5 class="card-title">Número de préstamos <br> por lector</h5>
+								  <p class="card-text">Este reporte mostrará la cantidad de préstamos realizados a cada lector.</p>
+								  <a th:href="@{/reports/report3}" class="btn btn-primary">Ir al Reporte</a>
+								</div>
+							  </div>
+						</div>
 					</div>
+
+
+					<!-- /.container-fluid -->
 				</div>
-				<!-- /.container-fluid -->
 			</div>
 			<!-- End of Main Content -->
 			<!-- Footer -->
@@ -68,11 +77,6 @@
 
 	<div th:replace="fragments/scripts :: links"></div>
 
-	<script>
-        $('.input-group.date').datepicker({
-            autoclose: true,
-            todayHighlight: true
-        });
-    </script>
 </body>
+
 </html>

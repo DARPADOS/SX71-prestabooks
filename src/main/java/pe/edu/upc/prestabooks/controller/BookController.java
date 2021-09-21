@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import pe.edu.upc.prestabooks.entity.Author;
 import pe.edu.upc.prestabooks.entity.Book;
@@ -52,7 +53,7 @@ public class BookController {
 	// @Secured("ROLE_ADMIN")
 	@PostMapping("/save")
 	public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
-			SessionStatus status) throws Exception {
+			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
 		if (result.hasErrors()) {
 			model.addAttribute("listaAutores", authorService.getAll());
 			return "book/book";
@@ -62,7 +63,27 @@ public class BookController {
 			Book newBook = bookService.create(book);
 			detailAuthorBookService.addAuthorsWithBook(newBook, authors);
 
-			model.addAttribute("mensaje", "Se realizó bien!!");
+			redirectAttributes.addFlashAttribute("mensaje", "Se registró el libro satisfactoriamente.");
+
+			status.setComplete();
+			return "redirect:/books/list";
+		}
+	}
+
+	@PostMapping("/update")
+	public String updateBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
+			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
+		if (result.hasErrors()) {
+			model.addAttribute("listaAutores", authorService.getAll());
+			return "book/updateBook";
+		} else {
+
+			List<Author> authors = book.getAuthors();
+			Book newBook = bookService.create(book);
+			detailAuthorBookService.updateAuthorsWithBook(newBook, authors);
+
+			redirectAttributes.addFlashAttribute("mensaje", "Se modificó el libro satisfactoriamente.");
+
 			status.setComplete();
 			return "redirect:/books/list";
 		}
@@ -87,11 +108,12 @@ public class BookController {
 
 	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
-	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id) {
+	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			if (id != null && id > 0) {
 				bookService.deleteById(id);
-				model.put("mensaje", "Se eliminó correctamente!!");
+				redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el libro correctamente.");
+
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -102,12 +124,12 @@ public class BookController {
 
 	// @Secured("ROLE_ADMIN")
 	@GetMapping("/detalle/{id}")
-	public String viewBook(@PathVariable(value = "id") int id, Model model) {
+	public String viewBook(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			Optional<Book> book = bookService.findById(id);
 			model.addAttribute("listaAutores", authorService.getAll());
 			if (!book.isPresent()) {
-				model.addAttribute("mensaje", "Libro no existe");
+				redirectAttributes.addFlashAttribute("mensaje", "El libro no existe.");
 				return "redirect:/books/list";
 			} else {
 				model.addAttribute("book", book.get());

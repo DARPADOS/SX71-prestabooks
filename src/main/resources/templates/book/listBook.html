@@ -58,7 +58,7 @@
 								<th scope="col">Idioma</th>
 								<th scope="col">Stock</th>
 								<th scope="col">N° paginas</th>
-								<th scope="col">Autor</th>
+								<th scope="col">Autor(es)</th>
 								<th scope="col">OP</th>
 								<th scope="col">OP</th>
 							</tr>
@@ -95,8 +95,9 @@
 		<!-- End of Content Wrapper -->
 	</div>
 	<!-- End of Page Wrapper -->
-
+	<div th:replace="fragments/modals :: success"></div>
 	<div th:replace="fragments/scripts :: links"></div>
+	<div th:replace="fragments/scripts :: modal-script"></div>
 </body>
 
 </html>
