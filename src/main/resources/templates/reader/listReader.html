@@ -5,32 +5,37 @@
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
-        <!--sidebar-->
-        <div th:replace="fragments/sidebar :: sidebar"></div>
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!--sidebar-->
+		<div th:replace="fragments/sidebar :: sidebar"></div>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
-            <!-- Main Content -->
-            <div id="content">
-                <!-- Topbar -->
-                <div th:replace="fragments/topbar :: topbar"></div>
-                <!-- End of Topbar -->
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column"
+			style="overflow-y: scroll; height: 100vh;">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<div th:replace="fragments/topbar :: topbar"></div>
+				<!-- End of Topbar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
 
-                    <!-- Page Heading -->
+					<!-- Page Heading -->
 					<h1 class="h3 mb-4 text-gray-800">Lectores</h1>
 					<div class="row">
-						<div class="col-4"><a th:href="@{/readers/new/}" class="btn btn-primary btn-xs">Nuevo</a></div>
+						<div class="col-4">
+							<a th:href="@{/readers/new/}" class="btn btn-primary btn-xs">Nuevo</a>
+						</div>
 						<div class="col">
-							<form th:action="@{/readers/list}" method="get" th:object="${readerSearch}">
+							<form th:action="@{/readers/list}" method="get"
+								th:object="${readerSearch}">
 								<div class="form-group row justify-content-center">
 									<label class="col-sm-1 text-right col-form-label" for=search>Buscar:</label>
 									<div class="col-sm">
-										<input type="text" minlength="3" class="form-control" th:field="*{firstName}" id="search" required></input>
+										<input type="text" minlength="3" class="form-control"
+											th:field="*{firstName}" id="search" required></input>
 									</div>
 									<div class="col-sm">
 										<button type="submit" class="btn btn-primary">Buscar</button>
@@ -40,7 +45,8 @@
 							</form>
 						</div>
 					</div>
-                    <h5 th:if="${readerSearch.firstName}" th:text="'Resultados para: ' + ${readerSearch.firstName}"></h5>
+					<h5 th:if="${readerSearch.firstName}"
+						th:text="'Resultados para: ' + ${readerSearch.firstName}"></h5>
 
 					<hr class="sidebar-divider">
 
@@ -54,6 +60,7 @@
 								<th scope="col">Correo electronico</th>
 								<th scope="col">Direccion</th>
 								<th scope="col">OP</th>
+								<th scope="col">OP</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -61,29 +68,32 @@
 								<td th:text="${reader.id}"></td>
 								<td th:text="${reader.dni}"></td>
 								<td th:text="${reader.firstName}"></td>
-                                <td th:text="${reader.lastName}"></td>
+								<td th:text="${reader.lastName}"></td>
 								<td th:text="${reader.email}"></td>
 								<td th:text="${reader.address}"></td>
 								<td><a th:href="@{/readers/delete?id=}+${reader.id}"
-										class="btn btn-danger"><i class="fa fa-trash"
-											aria-hidden="true"></i></a></td>
+									class="btn btn-danger"><i class="fa fa-trash"
+										aria-hidden="true"></i></a></td>
+								<td><a th:href="@{'/readers/detalle/'+${reader.id}}"
+									class="btn btn-danger"><i class="fa fa-pen"
+										aria-hidden="true"></i></a></td>
 							</tr>
 						</tbody>
 					</table>
 
-                </div>
-                <!-- /.container-fluid -->
-            </div>
-            <!-- End of Main Content -->
-            <!-- Footer -->
-            <div th:replace="fragments/footer :: footer"></div>
-            <!-- End of Footer -->
-        </div>
-        <!-- End of Content Wrapper -->
-    </div>
-    <!-- End of Page Wrapper -->
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+			<!-- End of Main Content -->
+			<!-- Footer -->
+			<div th:replace="fragments/footer :: footer"></div>
+			<!-- End of Footer -->
+		</div>
+		<!-- End of Content Wrapper -->
+	</div>
+	<!-- End of Page Wrapper -->
 
-    <div th:replace="fragments/scripts :: links"></div>
+	<div th:replace="fragments/scripts :: links"></div>
 </body>
 
 </html>

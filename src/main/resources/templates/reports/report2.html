@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<div th:replace="fragments/head :: head('Inicio')"></div>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+		<!--sidebar-->
+		<div th:replace="fragments/sidebar :: sidebar"></div>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column"
+			style="overflow-y: scroll; height: 100vh;">
+			<!-- Main Content -->
+			<div id="content">
+				<!-- Topbar -->
+				<div th:replace="fragments/topbar :: topbar"></div>
+				<!-- End of Topbar -->
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+
+					<div class="bg row">
+
+						<div class="content container">
+							<div class="cinforeport">
+								<h3 class="title-content">Numero de prestamos por libro</h3>
+								<p class="inforeport">Lista de las veces que un libro
+									ha sido prestado</p>
+							</div>
+							<table class="table">
+								<thead class="thead-light">
+									<tr>
+										<th scope="col" class="text-center">Libro</th>
+										<th scope="col" class="text-center">Cantidad</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="rep : ${listReport2}">
+										<td class="text-center" th:text="${rep[0]}"></td>
+										<td class="text-center" th:text="${rep[1]}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+					<!-- /.container-fluid -->
+				</div>
+				<!-- End of Main Content -->
+				<!-- Footer -->
+				<div th:replace="fragments/footer :: footer"></div>
+				<!-- End of Footer -->
+			</div>
+			<!-- End of Content Wrapper -->
+		</div>
+		<!-- End of Page Wrapper -->
+
+		<div th:replace="fragments/scripts :: links"></div>
+
+		<script>
+        $('.input-group.date').datepicker({
+            autoclose: true,
+            todayHighlight: true
+        });
+    </script>
+</body>
+</html>

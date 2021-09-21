@@ -81,6 +81,7 @@ public class AuthorController {
 	public String viewAuthor(@PathVariable(value = "id") int id, Model model) {
 		try {
 			Optional<Author> author = authorService.findById(id);
+			//model.addAttribute("listaAutores", authorService.getAll());
 			if(!author.isPresent()) {
 				model.addAttribute("mensaje","Author no existe");
 				return "redirect:/authors/list";

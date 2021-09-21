@@ -1,7 +1,9 @@
 package pe.edu.upc.prestabooks.controller;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -70,7 +73,26 @@ public class EmployeeController {
             return "redirect:/employees/list";
         }
     }
+    @PostMapping("/update")
+    public String updateEmployee(@Valid Employee employee, BindingResult result1,
+            Model model) throws Exception {
+        if (result1.hasErrors()) {
+            return "employee/updateEmployee";
+        } else {
+            try {
+                //User userCreated = userService.registerNewEmployeeAccount(user);
+                //employee.setId(userCreated.getId());
+                employeeService.create(employee);
+                model.addAttribute("mensaje", "Se registró exitosamente!!");
+                return "redirect:/employees/list";
+            } catch (Exception e) {
+                e.getStackTrace();
+                System.err.println(e.getMessage());
+            }
 
+            return "redirect:/employees/list";
+        }
+    }
     @Secured("ROLE_ADMIN")
     @GetMapping("/list")
     public String listBook(@ModelAttribute("employeeSearch") Employee employeeSearch, Model model) {
@@ -86,5 +108,24 @@ public class EmployeeController {
         }
         return "employee/list";
     }
+    
+ // @Secured("ROLE_ADMIN")
+ 	@GetMapping("/detalle/{id}")
+ 	public String viewEmployee(@PathVariable(value = "id") int id, Model model) {
+ 		try {
+ 			Optional<Employee> employee = employeeService.findById(id);
+ 			model.addAttribute("listEmployees", employeeService.getAll());
+ 			if (!employee.isPresent()) {
+ 				model.addAttribute("mensaje", "Empleado no existe");
+ 				return "redirect:/employees/list";
+ 			} else {
+ 				model.addAttribute("employee", employee.get());
+ 				return "employee/updateEmployee";
+ 			}
+ 		} catch (Exception e) {
+ 			System.out.println(e.getMessage());
+ 		}
+ 		return "employee/updateEmployee";
+ 	}
 
 }

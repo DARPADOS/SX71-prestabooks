@@ -52,6 +52,7 @@
 								<th scope="col">Apellidos</th>
 								<th scope="col">Nacionalidad</th>
 								<th scope="col">OP</th>
+								<th scope="col">OP</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -63,6 +64,10 @@
 								<td><a th:href="@{/authors/delete?id=}+${author.id}"
 										class="btn btn-danger"><i class="fa fa-trash"
 											aria-hidden="true"></i></a></td>
+								<td><a
+									th:href="@{'/authors/detalle/'+${author.id}}"
+									class="btn btn-danger"><i class="fa fa-pen"
+										aria-hidden="true"></i></a></td>
 							</tr>
 						</tbody>
 					</table>

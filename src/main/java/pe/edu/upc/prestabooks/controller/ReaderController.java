@@ -84,6 +84,7 @@ public class ReaderController {
 	public String viewReader(@PathVariable(value = "id") int id, Model model) {
 		try {
 			Optional<Reader> reader = readerService.findById(id);
+			model.addAttribute("listaLectores", readerService.getAll());
 			if (!reader.isPresent()) {
 				model.addAttribute("mensaje", "Reader no existe");
 				return "redirect:/readers/list";
