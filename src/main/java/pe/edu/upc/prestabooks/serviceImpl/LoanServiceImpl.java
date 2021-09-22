@@ -47,17 +47,14 @@ public class LoanServiceImpl implements LoanService {
 	}
 	@Override
 	public List<String[]> listReport1() {
-		// TODO Auto-generated method stub
 		return loanRepository.listReport1();
 	}
 	@Override
 	public List<String[]> listReport2() {
-		// TODO Auto-generated method stub
 		return loanRepository.listReport2();
 	}
 	@Override
 	public List<String[]> listReport3() {
-		// TODO Auto-generated method stub
 		return loanRepository.listReport3();
 	}
 	
