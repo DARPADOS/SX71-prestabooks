@@ -3,6 +3,9 @@ package pe.edu.upc.prestabooks.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class DetailAuthorBookId implements Serializable {
     
     private static final long serialVersionUID = 1L;

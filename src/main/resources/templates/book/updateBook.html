@@ -11,8 +11,7 @@
 		<div th:replace="fragments/sidebar :: sidebar"></div>
 
 		<!-- Content Wrapper -->
-		<div id="content-wrapper" class="d-flex flex-column"
-			style="overflow-y: scroll; height: 100vh;">
+		<div id="content-wrapper" class="d-flex flex-column" style="overflow-y: scroll; height: 100vh;">
 			<!-- Main Content -->
 			<div id="content">
 				<!-- Topbar -->
@@ -27,8 +26,7 @@
 
 					<hr class="sidebar-divider">
 					<div th:object="${book}" th:remove="tag">
-						<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
-							role="alert">
+						<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger" role="alert">
 							<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 						</ul>
 					</div>
@@ -40,11 +38,10 @@
 							<div class="form-group row">
 								<label for="id" class="col-sm-2 col-form-label">ID:</label>
 								<div class="col-sm-6">
-									<input autofocus type="text" readonly="readonly"
-										th:field="*{id}" class="form-control"
-										th:errorclass="'form-control alert-danger'" /> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></small>
+									<input autofocus type="text" readonly="readonly" th:field="*{id}"
+										class="form-control" th:errorclass="'form-control alert-danger'" /> <small
+										class="form-text text-danger" th:if="${#fields.hasErrors('id')}"
+										th:errors="*{id}"></small>
 								</div>
 							</div>
 
@@ -53,19 +50,20 @@
 								<div class="col-sm-6">
 									<input type="text" th:field="*{title}" class="form-control"
 										th:errorclass="'form-control alert-danger'" /> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
+										class="form-text text-danger" th:if="${#fields.hasErrors('title')}"
+										th:errors="*{title}"></small>
 								</div>
 							</div>
 
 							<div class="form-group row">
-								<label for="authors" class="col-sm-2 col-form-label">Autor:</label>
+								<label for="authors" class="col-sm-2 col-form-label">Autor(es):</label>
 								<div class="col-sm-6">
-									<select class="select2 form-control" name="state"
-										multiple="multiple" th:field="*{authors}">
+									<select class="select2 form-control" name="authors" multiple="multiple"
+										th:field="*{authors}">
 										<option th:each="author:${listaAutores}" class="authorOption"
 											th:value="${{author}}"
-											th:text="${author.firstName} + ' ' + ${author.firstName}"></option>
+											th:text="${author.firstName} + ' ' + ${author.lastName}"
+											th:selected="${#lists.contains(listAuthorId,author.id)}"></option>
 									</select> <small class="form-text text-danger"
 										th:if="${#fields.hasErrors('authors')}" th:errors="*{authors}"></small>
 								</div>
@@ -75,11 +73,9 @@
 								<label for="original_language" class="col-sm-2 col-form-label">Lenguaje
 									Original:</label>
 								<div class="col-sm-6">
-									<input type="text" th:field="*{original_language}"
-										class="form-control"
+									<input type="text" th:field="*{original_language}" class="form-control"
 										th:errorclass="'form-control alert-danger'" /> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('original_language')}"
+										class="form-text text-danger" th:if="${#fields.hasErrors('original_language')}"
 										th:errors="*{original_language}"></small>
 								</div>
 							</div>
@@ -87,23 +83,22 @@
 							<div class="form-group row">
 								<label for="stock" class="col-sm-2 col-form-label">Cantidad:</label>
 								<div class="col-sm-6">
-									<input type="text" th:field="*{stock}" class="form-control"
+									<input type="text" th:field="*{stockString}" class="form-control"
 										th:errorclass="'form-control alert-danger'" /> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></small>
+										class="form-text text-danger" th:if="${#fields.hasErrors('stockString')}"
+										th:errors="*{stockString}"></small>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label for="pages" class="col-sm-2 col-form-label">Paginas:</label>
 								<div class="col-sm-6">
-									<input type="text" th:field="*{pages}" class="form-control"
+									<input type="text" th:field="*{pagesString}" class="form-control"
 										th:errorclass="'form-control alert-danger'" /> <small
-										class="form-text text-danger"
-										th:if="${#fields.hasErrors('pages')}" th:errors="*{pages}"></small>
+										class="form-text text-danger" th:if="${#fields.hasErrors('pagesString')}"
+										th:errors="*{pagesString}"></small>
 								</div>
 							</div>
-
 
 						</div>
 						<div class="form-group row">
@@ -132,21 +127,27 @@
 
 	<div th:replace="fragments/scripts :: links"></div>
 
-    <div th:replace="fragments/scripts :: select2"></div>
-    <div th:replace="fragments/scripts :: select2-bootstrap4-theme"></div>
+	<div th:replace="fragments/scripts :: select2"></div>
+	<div th:replace="fragments/scripts :: select2-bootstrap4-theme"></div>
 
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                language: "es",
-            });
+	<script>
+		$(document).ready(function () {
+			$('.select2').select2({
+				language: "es",
+			});
+			$('.btn-danger').click(function (e) {
 
+				if (jQuery('.select2').val() == null) {
+					alert('this feilds is required');
+				}
+			});
 
-        });
+		});
 
-    </script>
-
+	</script>
+	<!--
 	<script th:inline="javascript">
+		/*
 		var list = [];
 		/*[# th:each="author:${book.authors}"]*/
   			var item =/*[[${author}]]*/ 'default';
@@ -154,10 +155,16 @@
 		/*[/]*/
 			list.forEach(element => console.log(element))
 			console.log(list)
+		list.forEach(element => {
+			var selector = 'option[value=\"'+ element + '\"]';
+			$(selector).prop('selected', true);
+		})
 
-			$('.select2').val(list)
-			$('.select2').trigger('change')
-	</script>
+
+			/*$('.select2').val(list)
+			$('.select2').trigger('change')*/
+	</script>-->
 
 </body>
+
 </html>

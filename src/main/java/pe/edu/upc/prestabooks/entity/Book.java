@@ -3,7 +3,6 @@ package pe.edu.upc.prestabooks.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +14,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.SQLDelete;
@@ -32,26 +30,26 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotEmpty(message = "Ingrese título")
+	@Pattern(regexp = ".{1,100}", message = "Ingrese el título correctamente")
 	@Column(name = "title", nullable =false , length=100)
 	private String title;
 	
-	@NotEmpty(message = "Ingrese lenguaje original")
+	@Pattern(regexp = "[a-zA-Zñáéíóúü]{3,20}", message = "Ingrese el idioma original correctamente")
 	@Column(name = "original_language", nullable =false , length=20)
 	private String original_language;
 	
-	@NotNull(message = "Ingrese stock")
+	//@NotNull(message = "Ingrese stock")
 	@Column(name = "stock", nullable =false)
 	private Integer stock;
 	
-	@NotNull(message = "Ingrese el número de páginas")
+	//@NotNull(message = "Ingrese el número de páginas")
 	@Column(name = "pages", nullable =false)
 	private Integer pages;
 
 	private Boolean deleted = Boolean.FALSE;
 	
 	//Relaciones
-	@OneToMany(mappedBy = "book", fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "book", fetch=FetchType.LAZY)
 	private List<DetailAuthorBook> detailAuthorBooks;
 
 	@OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
@@ -59,11 +57,10 @@ public class Book {
 
 	// No se guardan en la base de datos
 
-	@NotEmpty
 	@Transient
 	private List<Author> authors;
 
-	@Pattern(regexp = "^[1-9]\\d*", message = "Ingrese el stock correctamente")
+	@Pattern(regexp = "^[0-9]\\d{0,1}", message = "Ingrese el stock correctamente")
 	@Transient
 	private String stockString;
 
@@ -73,6 +70,9 @@ public class Book {
 
 	// Funciones
 	public String getStockString() {
+		if(stock != null ){
+			return Integer.toString(stock);
+		}
 		return stockString;
 	}
 
@@ -85,6 +85,9 @@ public class Book {
 		}
 	}
 	public String getPagesString() {
+		if(pages != null ){
+			return Integer.toString(pages);
+		}
 		return pagesString;
 	}
 

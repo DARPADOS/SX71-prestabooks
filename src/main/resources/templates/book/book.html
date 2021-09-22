@@ -47,7 +47,7 @@
                             <label for="authors" class="col-sm-2 col-form-label">Autor:</label>
                             <div class="col-sm-6">
                                 <select class="select2 form-control" name="state" multiple="multiple" th:field="*{authors}">
-                                    <option th:each="author:${listaAutores}" th:value="${{author}}" th:text="${author.firstName} + ' ' + ${author.firstName}"></option>
+                                    <option th:each="author:${listaAutores}" th:value="${{author}}" th:text="${author.firstName} + ' ' + ${author.lastName}"></option>
                                 </select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('authors')}"
                                     th:errors="*{authors}"></small>
@@ -75,12 +75,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="pages" class="col-sm-2 col-form-label">Número de Paginas:</label>
+                            <label for="pagesString" class="col-sm-2 col-form-label">Número de Paginas:</label>
                             <div class="col-sm-6">
-                                <input type="text" th:field="*{pages}" class="form-control"
+                                <input type="text" th:field="*{pagesString}" class="form-control"
                                     th:errorclass="'form-control alert-danger'" />
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('pages')}"
-                                    th:errors="*{pages}"></small>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('pagesString')}"
+                                    th:errors="*{pagesString}"></small>
                             </div>
                         </div>
 

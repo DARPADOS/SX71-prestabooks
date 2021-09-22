@@ -14,12 +14,12 @@ import javax.persistence.Table;
 public class DetailAuthorBook {
 	
 	@Id
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "author_id", nullable = false)
 	private Author author;
 	
 	@Id
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne()
 	@JoinColumn(name = "book_id", nullable = false)
 	private Book book;
 	

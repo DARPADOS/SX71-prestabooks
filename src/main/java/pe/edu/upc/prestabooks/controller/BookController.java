@@ -1,5 +1,6 @@
 package pe.edu.upc.prestabooks.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +55,10 @@ public class BookController {
 	@PostMapping("/save")
 	public String saveBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
 			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
+
+		if (book.getAuthors().isEmpty()) {
+			result.rejectValue("authors", "error.author", "Seleccione al menos un Author.");
+		}
 		if (result.hasErrors()) {
 			model.addAttribute("listaAutores", authorService.getAll());
 			return "book/book";
@@ -73,17 +78,32 @@ public class BookController {
 	@PostMapping("/update")
 	public String updateBook(@Valid @ModelAttribute("book") Book book, BindingResult result, Model model,
 			SessionStatus status, RedirectAttributes redirectAttributes) throws Exception {
+
+		if (book.getAuthors().isEmpty()) {
+			result.rejectValue("authors", "error.author", "Seleccione al menos un Author.");
+		}
 		if (result.hasErrors()) {
 			model.addAttribute("listaAutores", authorService.getAll());
+			List<Integer> list = new ArrayList<Integer>();
+			book.getAuthors().forEach((e) -> {
+				list.add(e.getId());
+			});
+			model.addAttribute("listAuthorId", list);
 			return "book/updateBook";
 		} else {
 
-			List<Author> authors = book.getAuthors();
-			Book newBook = bookService.create(book);
-			detailAuthorBookService.updateAuthorsWithBook(newBook, authors);
+			if (!book.getAuthors().isEmpty()) {
 
-			redirectAttributes.addFlashAttribute("mensaje", "Se modificó el libro satisfactoriamente.");
+				List<Author> authors = book.getAuthors();
+				bookService.update(book);
+				detailAuthorBookService.updateAuthorsWithBook(book, authors);
 
+				redirectAttributes.addFlashAttribute("mensaje", "Se modificó el libro satisfactoriamente.");
+			} else {
+				System.out.println("AUTHORS SIZE: " + book.getAuthors().size());
+				System.out.println("AUTHORS: " + book.getAuthors().toString());
+
+			}
 			status.setComplete();
 			return "redirect:/books/list";
 		}
@@ -95,8 +115,7 @@ public class BookController {
 		try {
 			if (bookSearch.getTitle() != null) {
 				model.addAttribute("listaLibros", bookService.findByTitleOrAuthorName(bookSearch.getTitle()));
-			}
-			else {
+			} else {
 				model.addAttribute("listaLibros", bookService.getAll());
 				model.addAttribute("bookSearch", new Book());
 			}
@@ -108,7 +127,8 @@ public class BookController {
 
 	// @Secured("ROLE_ADMIN")
 	@RequestMapping("/delete")
-	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
+	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id,
+			RedirectAttributes redirectAttributes) {
 		try {
 			if (id != null && id > 0) {
 				bookService.deleteById(id);
@@ -132,6 +152,11 @@ public class BookController {
 				redirectAttributes.addFlashAttribute("mensaje", "El libro no existe.");
 				return "redirect:/books/list";
 			} else {
+				List<Integer> list = new ArrayList<Integer>();
+				book.get().getAuthors().forEach((e) -> {
+					list.add(e.getId());
+				});
+				model.addAttribute("listAuthorId", list);
 				model.addAttribute("book", book.get());
 				return "book/updateBook";
 			}

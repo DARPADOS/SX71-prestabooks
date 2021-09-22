@@ -18,22 +18,22 @@
                 aria-controls="collapseTwo"> <i class="fas fa-fw fa-cog"></i> <span>Menú</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasRole('ADMIN')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/employees/list}">Empleados</a>
                 </div>
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasRole('ADMIN')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/authors/list}">Autores</a>
                 </div>
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasRole('ADMIN')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/books/list}">Libros</a>
                 </div>
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasAnyRole('ADMIN', 'EMPLOYEE')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/readers/list}">Lectores</a>
                 </div>
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasAnyRole('ADMIN', 'EMPLOYEE')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/loans/list}">Prestamos</a>
                 </div>
-                <div class="bg-white py-2 collapse-inner rounded">
+                <div sec:authorize="hasRole('ADMIN')" class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/reports}">Reportes</a>
                 </div>
             </div>

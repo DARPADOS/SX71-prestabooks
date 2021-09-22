@@ -6,7 +6,7 @@ RUN mvn clean package -DskipTests
 
 FROM adoptopenjdk/openjdk11:x86_64-alpine-jre-11.0.12_7
 RUN mkdir /app
-COPY --from=BUILDER  /project/target/prestabooks-0.0.1.jar /app/app.jar
 WORKDIR /app
-EXPOSE 8080
-CMD "java" "-jar" "app.jar">
+COPY --from=BUILDER /project/target/prestabooks-0.0.1.jar /app/app.jar
+EXPOSE 3000
+CMD "java" "-jar" "app.jar"

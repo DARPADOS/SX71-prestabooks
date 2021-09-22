@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+import org.hibernate.annotations.Parent;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -30,27 +31,23 @@ public class Reader {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@NotEmpty(message = "Ingrese DNI")
-	@Pattern(regexp = "[^0]\\d+", message = "Ingrese DNI correctamente.")
+    @Pattern(regexp = "[^0]\\d{7}", message = "Ingrese DNI correctamente.")
 	@Column(name = "dni", nullable =false , length=8)
 	private String dni;
 	
-	@NotEmpty(message = "Ingrese nombres")
-	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
-	@Column(name = "first_name", nullable =false , length=30)
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,50}$", message = "Ingrese el nombre correctamente.")
+	@Column(name = "first_name", nullable =false , length=50)
 	private String firstName;
 	
-	@NotEmpty(message = "Ingrese apellidos")
-	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el apellido correctamente")
-	@Column(name = "last_name", nullable =false , length=30)
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,50}$", message = "Ingrese el apellido correctamente.")
+	@Column(name = "last_name", nullable =false , length=50)
 	private String lastName;
 	
-	@NotEmpty(message = "Ingrese email")
-	@Email
-	@Column(name = "email", nullable =false , length=30)
+	@Pattern(regexp = "[a-zA-Z0+9_.-]{2,20}@[a-zA-Z0-9]{2,20}\\.[a-zA-Z]{2,10}", message = "Ingrese el email correctamente.")
+	@Column(name = "email", nullable =false , length=50)
 	private String email;
 	
-	@NotEmpty(message = "Ingrese dirección")
+	@Pattern(regexp = "^[a-zA-Z].{9,149}", message = "Ingrese la dirección correctamente")
 	@Column(name = "address", nullable =false , length=150)
 	private String address;
 	

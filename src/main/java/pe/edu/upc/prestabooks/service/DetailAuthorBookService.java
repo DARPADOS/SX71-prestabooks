@@ -11,6 +11,5 @@ public interface DetailAuthorBookService extends CrudService<DetailAuthorBook,De
     
     void addAuthorsWithBook(Book book, List<Author> authors) throws Exception;
 
-    void updateAuthorsWithBook(Book newBook, List<Author> authors) throws Exception;
-    
+    void updateAuthorsWithBook(Book newBook, List<Author> authors) throws Exception;    
 }

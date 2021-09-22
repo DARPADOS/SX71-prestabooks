@@ -23,7 +23,7 @@ public class Authority {
     @Column(nullable = false)
     private String authority;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -31,17 +31,15 @@ public class Author {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@NotEmpty(message = "Ingrese nombres")
-	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,50}$", message = "Ingrese el nombre correctamente")
 	@Column(name = "first_name", nullable =false , length=50)
 	private String firstName;
 	
-	@NotEmpty(message = "Ingrese apellidos")
-	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,50}$", message = "Ingrese el apellido correctamente")
 	@Column(name = "last_name", nullable =false , length=50)
 	private String lastName;
 	
-	@NotEmpty(message = "Ingrese nacionalidad")
+	@Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,50}$", message = "Ingrese la nacionalidad correctamente")
 	@Column(name = "nationality", nullable =false , length=50)
 	private String nationality;
 

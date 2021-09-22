@@ -1,8 +1,8 @@
 services:
-  web_app:
+  app:
     build: .
     ports:
-      - 8080:8080
+      - 8080:3000
     environment:
       - APP_DATABASE_HOST=postgres
       - APP_DATABASE_PORT=5432
@@ -17,12 +17,12 @@ services:
       - POSTGRES_PASSWORD=123456
       - POSTGRES_DB=prestabooks_db
 
-  pgadmin:
-    image: dpage/pgadmin4:5.6
-    ports:
-      - 80:80
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=darpa@darpa.com
-      - PGADMIN_DEFAULT_PASSWORD=123456789
-    links:
-      - postgres:postgres
+#  pgadmin:
+#    image: dpage/pgadmin4:5.6
+#    ports:
+#      - 80:80
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=darpa@darpa.com
+#      - PGADMIN_DEFAULT_PASSWORD=123456789
+#    links:
+#      - postgres:postgres

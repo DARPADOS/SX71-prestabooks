@@ -30,12 +30,11 @@ public class User {
     
     @NotBlank
     @Size(max = 20, min = 5, message = "Ingrese el nombre de usuario correctamente.")
-    @Pattern(regexp = "[a-zA-Z0-9]+", message ="Ingrese el nombre de usuario correctamente.")
+    @Pattern(regexp = "[a-zA-Z0-9]{5,20}", message ="Ingrese el nombre de usuario correctamente.")
     @Column(name="username", length=20, nullable=false)
 	private String username;
 	
-    @Size(max = 60, min = 5, message = "La contraseña tiene que poseer entre 5 a 60 carácteres.")
-    @NotBlank
+    @Size(max = 60, min = 5, message = "Ingrese la contraseña correctamente.")
 	@Column(name="password",  length=60, nullable=false)
 	private String password;
 

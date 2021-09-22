@@ -67,6 +67,7 @@ public class initUserDB implements CommandLineRunner{
             employee.setLastName("Lopez");
             employee.setHireDate(Calendar.getInstance().getTime());
             employee.setPhone("964282430");
+            //employee.setUser(userEmployee);
 
             employeeRepository.save(employee);
 
@@ -85,6 +86,12 @@ public class initUserDB implements CommandLineRunner{
             author.setLastName("King");
             author.setNationality("Estados Unidos");
             authorService.create(author);
+
+            Author author2 = new Author();
+            author2.setFirstName("Edgar Allan");
+            author2.setLastName("Poe");
+            author2.setNationality("Estados Unidos");
+            authorService.create(author2);
 
 
             Book book = new Book();

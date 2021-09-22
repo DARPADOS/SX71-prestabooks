@@ -34,5 +34,10 @@ public class UserServiceImpl implements UserService {
         user.addAuthority(authName);
         return userRepository.save(user);
     }
+
+    @Override
+    public Boolean isUsernameExist(User user) throws Exception {
+        return userRepository.findByUsername(user.getUsername()).isPresent();
+    }
     
 }

@@ -58,13 +58,17 @@ public class EmployeeController {
     @Secured("ROLE_ADMIN")
     @PostMapping("/save")
     public String saveEmployee(@Valid Employee employee, BindingResult result1, @Valid User user, BindingResult result2,
-            Model model,  RedirectAttributes redirectAttributes) throws Exception {
+            Model model, RedirectAttributes redirectAttributes) throws Exception {
+        if (userService.isUsernameExist(user)) {
+            result2.rejectValue("username", "error.username", "El nombre de usuario ya existe");
+        }
         if (result1.hasErrors() || result2.hasErrors()) {
             return "employee/employee";
         } else {
             try {
                 User userCreated = userService.registerNewEmployeeAccount(user);
                 employee.setId(userCreated.getId());
+                employee.setUser(userCreated);
                 employeeService.create(employee);
                 redirectAttributes.addFlashAttribute("mensaje", "Se registró el empleado satisfactoriamente.");
                 return "redirect:/employees/list";
@@ -76,15 +80,16 @@ public class EmployeeController {
             return "redirect:/employees/list";
         }
     }
+
     @PostMapping("/update")
-    public String updateEmployee(@Valid Employee employee, BindingResult result1,
-            Model model, RedirectAttributes redirectAttributes) throws Exception {
+    public String updateEmployee(@Valid Employee employee, BindingResult result1, Model model,
+            RedirectAttributes redirectAttributes) throws Exception {
         if (result1.hasErrors()) {
             return "employee/updateEmployee";
         } else {
             try {
-                //User userCreated = userService.registerNewEmployeeAccount(user);
-                //employee.setId(userCreated.getId());
+                // User userCreated = userService.registerNewEmployeeAccount(user);
+                // employee.setId(userCreated.getId());
                 employeeService.create(employee);
                 redirectAttributes.addFlashAttribute("mensaje", "Se modificó el empleado satisfactoriamente.");
 
@@ -97,12 +102,14 @@ public class EmployeeController {
             return "redirect:/employees/list";
         }
     }
+
     @Secured("ROLE_ADMIN")
     @GetMapping("/list")
     public String listBook(@ModelAttribute("employeeSearch") Employee employeeSearch, Model model) {
         try {
             if (employeeSearch.getFirstName() != null) {
-                model.addAttribute("listEmployees", employeeService.findByFirstNameLikeOrLastNameLike(employeeSearch.getFirstName()));
+                model.addAttribute("listEmployees",
+                        employeeService.findByFirstNameLikeOrLastNameLike(employeeSearch.getFirstName()));
             } else {
                 model.addAttribute("listEmployees", employeeService.getAll());
                 model.addAttribute("employeeSearch", new Employee());
@@ -112,37 +119,39 @@ public class EmployeeController {
         }
         return "employee/list";
     }
+
     @RequestMapping("/delete")
-	public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id, RedirectAttributes redirectAttributes) {
-		try {
-			if (id != null && id > 0) {
-				employeeService.deleteById(id);
-				redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el empleado correctamente.");
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			model.put("mensaje", "Ocurrió un error");
-		}
-		return "redirect:/employees/list";
-	}
-    
- // @Secured("ROLE_ADMIN")
- 	@GetMapping("/detalle/{id}")
- 	public String viewEmployee(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
- 		try {
- 			Optional<Employee> employee = employeeService.findById(id);
- 			model.addAttribute("listEmployees", employeeService.getAll());
- 			if (!employee.isPresent()) {
+    public String deleteBook(Map<String, Object> model, @RequestParam(value = "id") Integer id,
+            RedirectAttributes redirectAttributes) {
+        try {
+            if (id != null && id > 0) {
+                employeeService.deleteById(id);
+                redirectAttributes.addFlashAttribute("mensaje", "Se eliminó el empleado correctamente.");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            model.put("mensaje", "Ocurrió un error");
+        }
+        return "redirect:/employees/list";
+    }
+
+    // @Secured("ROLE_ADMIN")
+    @GetMapping("/detalle/{id}")
+    public String viewEmployee(@PathVariable(value = "id") int id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Optional<Employee> employee = employeeService.findById(id);
+            model.addAttribute("listEmployees", employeeService.getAll());
+            if (!employee.isPresent()) {
                 redirectAttributes.addFlashAttribute("mensaje", "El empleado no existe.");
- 				return "redirect:/employees/list";
- 			} else {
- 				model.addAttribute("employee", employee.get());
- 				return "employee/updateEmployee";
- 			}
- 		} catch (Exception e) {
- 			System.out.println(e.getMessage());
- 		}
- 		return "employee/updateEmployee";
- 	}
+                return "redirect:/employees/list";
+            } else {
+                model.addAttribute("employee", employee.get());
+                return "employee/updateEmployee";
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return "employee/updateEmployee";
+    }
 
 }
