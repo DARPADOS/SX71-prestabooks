@@ -68,7 +68,7 @@ public class EmployeeController {
             try {
                 User userCreated = userService.registerNewEmployeeAccount(user);
                 employee.setId(userCreated.getId());
-                employee.setUser(userCreated);
+                //employee.setUser(userCreated);
                 employeeService.create(employee);
                 redirectAttributes.addFlashAttribute("mensaje", "Se registró el empleado satisfactoriamente.");
                 return "redirect:/employees/list";

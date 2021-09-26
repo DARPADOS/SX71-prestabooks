@@ -18,7 +18,7 @@ public interface LoanRepository extends JpaRepository<Loan, Integer> {
 			+ "UPPER(r.dni) like UPPER(CONCAT('%', ?1, '%'))) " + "order by l.loan_date DESC", nativeQuery = true)
 	List<Loan> findByDniOrNameOrBook(String searchTerm, Boolean returned) throws Exception;
 
-	@Query(value = "select u.user_id, concat(e.first_name,' ',e.last_name), count(l.id) from users u join loan l on l.user_id=u.user_id join employee e on e.id=u.user_id where u.user_id!=1 group by u.user_id, concat(e.first_name,' ',e.last_name) order by count(l.id) desc", nativeQuery = true)
+	@Query(value = "select u.id, concat(e.first_name,' ',e.last_name), count(l.id) from users u join loan l on l.user_id=u.id join employee e on e.id=u.id where u.id!=1 group by u.id, concat(e.first_name,' ',e.last_name) order by count(l.id) desc", nativeQuery = true)
 	public List<String[]> listReport1();
 
 	@Query(value = "select b.title, count(l.id) from book b join loan l on l.book_id=b.id group by b.title order by count(l.id) desc", nativeQuery = true)

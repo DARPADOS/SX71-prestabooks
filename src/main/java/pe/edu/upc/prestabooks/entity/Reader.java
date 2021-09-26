@@ -42,7 +42,7 @@ public class Reader {
 	@Column(name = "last_name", nullable =false , length=50)
 	private String lastName;
 	
-	@Pattern(regexp = "[a-zA-Z0+9_.-]{2,20}@[a-zA-Z0-9]{2,20}\\.[a-zA-Z]{2,10}", message = "Ingrese el email correctamente.")
+	@Pattern(regexp = "[a-zA-Z0-9_.-]{2,20}@[a-zA-Z0-9]{2,20}\\.[a-zA-Z]{2,10}", message = "Ingrese el email correctamente.")
 	@Column(name = "email", nullable =false , length=50)
 	private String email;
 	

@@ -25,12 +25,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
     private Integer id;
     
     @NotBlank
     @Size(max = 20, min = 5, message = "Ingrese el nombre de usuario correctamente.")
-    @Pattern(regexp = "[a-zA-Z0-9]{5,20}", message ="Ingrese el nombre de usuario correctamente.")
+    @Pattern(regexp = "[a-zA-Z0-9_.-]{5,20}", message ="Ingrese el nombre de usuario correctamente.")
     @Column(name="username", length=20, nullable=false)
 	private String username;
 	

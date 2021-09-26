@@ -52,7 +52,7 @@ public class Employee {
     @Temporal(TemporalType.DATE)
     private Date hireDate;
 
-    @Pattern(regexp = "^[9]\\d+{8}", message = "Ingrese el correctamente el celular.")
+    @Pattern(regexp = "^[9]\\d{8}", message = "Ingrese el correctamente el celular.")
     @Column(name = "phone")
     private String phone; 
     
@@ -78,14 +78,21 @@ public class Employee {
         super();
     }
 
-    public Employee(Integer id, String dni, String firstName, String lastName, Date hireDate, String phone, User user) {
+    
+    
+    public Employee(Integer id, @Pattern(regexp = "[^0]\\d{7}", message = "Ingrese DNI correctamente.") String dni,
+            @Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el nombre correctamente") String firstName,
+            @Pattern(regexp = "^[^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:\\[\\]]{2,}$", message = "Ingrese el apellido correctamente") String lastName,
+            @NotNull(message = "Ingrese una fecha de contratación.") @PastOrPresent(message = "Ingrese una fecha de contratación.") Date hireDate,
+            @Pattern(regexp = "^[9]\\d{8}", message = "Ingrese el correctamente el celular.") String phone,
+            Boolean deleted, User user) {
         this.id = id;
         this.dni = dni;
         this.firstName = firstName;
         this.lastName = lastName;
         this.hireDate = hireDate;
         this.phone = phone;
-
+        this.deleted = deleted;
         this.user = user;
     }
 
@@ -93,9 +100,8 @@ public class Employee {
         return id;
     }
 
-    public  Employee setId(Integer id) {
+    public void setId(Integer id) {
         this.id = id;
-        return this;
     }
 
     public String getDni() {
