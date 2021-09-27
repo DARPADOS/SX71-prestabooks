@@ -54,7 +54,7 @@
                                     th:errorclass="'form-control alert-danger'">
                                     <option th:value="${null}" selected>Seleccione un libro</option>
                                     <option th:each="book1:${listBooks}" th:value="${{book1}}"
-                                        th:text="${book1.title} + ': ' + ${book1.stock} + ' displonibles'"></option>
+                                        th:text="${book1.title} + ': ' + ${book1.stock} + ' disponibles'"></option>
                                 </select>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('book*')}"
                                     th:errors="*{book*}"></small>

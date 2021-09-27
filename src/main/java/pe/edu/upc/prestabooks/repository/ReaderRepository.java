@@ -13,6 +13,7 @@ public interface ReaderRepository extends JpaRepository<Reader, Integer>{
     @Query(value = "select r.* from reader r " +
     "where (UPPER(r.first_name) like UPPER(CONCAT('%', ?1, '%')) or " +
            "UPPER(r.last_name) like UPPER(CONCAT('%', ?1, '%')) or " +
-           "UPPER(r.dni) like UPPER(CONCAT('%', ?1, '%')))" , nativeQuery = true)
+           "UPPER(r.dni) like UPPER(CONCAT('%', ?1, '%'))) and " +
+           "r.deleted = false" , nativeQuery = true)
     List<Reader> findByFirstNameOrLastName(String searchTerm);
 }

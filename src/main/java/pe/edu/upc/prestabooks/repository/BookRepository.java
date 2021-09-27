@@ -15,7 +15,8 @@ public interface BookRepository extends JpaRepository<Book, Integer>{
     "join author a on a.id = det.author_id " +
     "where (UPPER(b.title) like UPPER(CONCAT('%', ?1, '%')) or " + 
            "UPPER(a.first_name) like UPPER(CONCAT('%', ?1, '%')) or " +
-           "UPPER(a.last_name) like UPPER(CONCAT('%', ?1, '%'))) " +
+           "UPPER(a.last_name) like UPPER(CONCAT('%', ?1, '%'))) and " +
+            "b.deleted = false" +
     "GROUP BY b.id", nativeQuery = true)
     List<Book> findByTitleOrAuthorName(String searchTerm);
 }

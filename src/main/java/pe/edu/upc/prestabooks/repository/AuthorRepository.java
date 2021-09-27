@@ -12,6 +12,7 @@ import pe.edu.upc.prestabooks.entity.Author;
 public interface AuthorRepository extends JpaRepository<Author, Integer>{
     @Query(value = "select a.* from author a " +
     "where (UPPER(a.first_name) like UPPER(CONCAT('%', ?1, '%')) or " +
-           "UPPER(a.last_name) like UPPER(CONCAT('%', ?1, '%')))", nativeQuery = true)
+           "UPPER(a.last_name) like UPPER(CONCAT('%', ?1, '%'))) and " +
+           "a.deleted = false", nativeQuery = true)
     List<Author> findByFirstNameLikeOrLastNameLike(String searchTerm);
 }
